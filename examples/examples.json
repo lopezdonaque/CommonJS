@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Combination Examples",
+    "items":
+    [
+      {
+        "text": "Dashboard",
+        "url": "dashboard/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "Dashboard example",
+        "status": "new"
+      }
+    ]
+  },
+
+  {
+    "title": "UI Components",
+    "items":
+    [
+      {
+        "text": "Notificator",
+        "url": "notificator/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "Notificator examples",
+        "status": "updated"
+      },
+
+      {
+        "text": "Timer",
+        "url": "timer/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "Timer examples",
+        "status": ""
+      }
+    ]
+  }
+]

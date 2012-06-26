@@ -1,0 +1,135 @@
+Release notes
+
+* 0.1.29 (2012-05-03)
+	- [tasks.TaskManager] Added tasks variable to config
+
+* 0.1.28 (2012-04-24)
+	- [ui.overrides.FormFieldRequired] Fixed bug when fieldLabel is undefined
+
+* 0.1.27 (2012-04-23)
+	- [ui.overrides.HelpText] Fixed field height
+
+* 0.1.26 (2012-03-29)
+	- New "Toggler" classes
+	- Converted some classes to Ext4 Class
+	- [ui.dashboard.Dashboard] Used toolbars as items
+
+* 0.1.25 (2012-03-13)
+	- [io.Iframe] Fixed "null" value for hidden inputs
+
+* 0.1.24 (2012-03-12)
+	- Fixed documentation
+	- [api.Rpc] Check if response is a valid json string
+	- [ui.overrides.VTypes] Custom vtypes	
+	- [ui.dashboard.Defaults] Applied vtypes
+
+* 0.1.23 (2012-03-06)
+	- [api.Rpc] Use Ext4 to do ajax request because ext3 with prototype adapter could not detect 404, 500, etc. errors
+
+* 0.1.22 (2012-03-05)
+	- [api.Rpc] Added event "beforerequest"
+
+* 0.1.21 (2012-02-27)
+	- [rpc.JsonRpc] Fixed content-type header
+	- Update jsduck to 3.6.1
+
+* 0.1.20 (2012-02-16)
+	- [utils.Url] Added method "isCrossDomain" to detect cross domain URLs
+	- [ui.login.LoginPanel] Fixed reminder event
+	- [io.Iframe] Added iframe transport
+	- [io.Xdr] Added XDomainRequest transport
+	- [rpc.JsonRpc] Added JsonRpc
+	- [api.Api] Renamed variable "URL" to "endpoint"	
+	- [api.RpcEvents] Converted to Ext4 class
+	- [api.Rpc] Converted to Ext4 class
+	- [utils.Debug] Added singleton class with debug methods
+
+* 0.1.19 (2012-02-09)
+	- [ui.overrides.FieldFocus] Added field focus override
+
+* 0.1.18 (2012-02-02)
+	- [task] Convert classes to use ExtJS4 define
+	- [Log] Convert class to use ExtJS4 define
+
+* 0.1.17 (2012-02-02)
+	- [ui.overrides] Mark overrides as applied to don't execute next time
+	
+* 0.1.16 (2012-02-02)
+	- Added locale files
+	- [ui.overrides.HelpText] Added white-space normal to css
+
+* 0.1.15 (2012-01-31)
+	- [ui.overrides.FormFieldRequired] Added
+	- [ui.overrides.FormFieldIcon] Added
+	- [ui.overrides.HelpText] Added      
+
+* 0.1.14 (2012-01-30)
+	- [tasks.TaskManager] Fixed constructor
+	- [tasks.Task] Fixed constructor
+
+* 0.1.13 (2012-01-27)
+	- [api.Store] Allowed to configure "reader_config.root" as null
+	- [utils.Bandwidth] Fixed string buffer error on IE7
+
+* 0.1.12 (2012-01-17)
+	- [ui.Grid] Allowed to configure action button with "action_button_config" option
+	- [utils.Url] Added new Url singleton class
+	- [api.Rpc] Fixed different domain detection
+	- [utils.Timer] Removed Prototype usage. Templates format has been changed.
+	- New "ui.Info"
+	- New "ui.Notificator"
+	- Fixed documentation and examples
+
+* 0.1.11 (2012-01-16)
+	- [ui.login.LoginPanel] Added submit on Enter key
+	- [ui.login.LoginPanel] Fire login event only if user and password are not empty
+
+* 0.1.10 (2012-01-12)
+	- [api] Moved Api to valid namespace api.Api
+	- [api.RPC] Renamed to Rpc
+	- [api.RPC.Events] Renamed to RpcEvents
+
+* 0.1.9 (2012-01-11)
+	- Fixed documentation and examples
+	- [utils.Timer] Renamed word "miliseconds" to "milliseconds"
+
+* 0.1.8 (2012-01-09)
+	- [ui.dashboard.Dashboard] Added "main_panel-header"
+
+* 0.1.7 (2012-01-05)
+	- [Cookies] Fixed jsdoc and examples
+	- [utils.Date] Fixed time constants
+
+* 0.1.6 (2011-12-28)
+	- [Log] Removed encoding object in IE
+	- [ui.Grid] Fixed bug adding action buttons (insertAdjacentHtml)
+
+* 0.1.5 (2011-12-28)
+	- [utils.Session] Fixed session refresh
+
+* 0.1.4 (2011-12-23)
+	- [utils.Date] Added Date utilities
+	- [ui.dashboard.Defaults] Added grid view defaults
+	- [api.Rpc] Fixed bug detecting cross domain URL
+	- [api.Store] Fixed Prototype usage
+	- [ui.dashboard.AppWindow] Fixed Prototype usage
+	- [ui.Grid] Fixed Prototype usage
+
+* 0.1.3 (2011-12-23)
+	- [Rpc] Added non cross domain URL detection to use always XHR
+	- [LoginPanel] Added references to input elements
+	- [ConnectionChecker] Fixed bug trying to access object when parent constructor has not been initialized
+	- [Session] Added renew and login events to avoid use of renew_url and logout_url
+
+* 0.1.2 (2011-12-20)
+	- [Langs] Allowed language_resources with only one context
+	- [ui.dashboard] Encapsulate dashboard defaults
+	- [Log] Convert log parameters to string to display in IE
+	- [Rpc] Fixed jsdoc
+	- [ui.login] New LoginPanel
+
+* 0.1.1 (2011-12-16)
+	- [ui.dashboard] Added ui.dashboard classes
+
+* 0.1.0 (2011-12-16)
+	- Initial version
