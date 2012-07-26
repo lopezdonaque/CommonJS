@@ -19,12 +19,8 @@
           "path": "src/"
         },
         {
-          "text": "Log.js",
-          "path": "src/"
-        },
-        {
-          "text": "Cookies.js",
-          "path": "src/"
+          "text": "Logger.js",
+          "path": "src/log/"
         },
         {
           "text": "Langs.js",
@@ -59,6 +55,10 @@
           "path": "src/utils/"
         },
         {
+          "text": "Array.js",
+          "path": "src/utils/"
+        },
+        {
           "text": "Url.js",
           "path": "src/utils/"
         },
@@ -77,6 +77,146 @@
         {
           "text": "FullScreen.js",
           "path": "src/utils/"
+        },
+        {
+          "text": "Browser.js",
+          "path": "src/capabilities/"
+        },
+        {
+          "text": "BrowserPlugins.js",
+          "path": "src/capabilities/"
+        },
+        {
+          "text": "Base64.js",
+          "path": "src/crypt/"
+        },
+        {
+          "text": "Md5.js",
+          "path": "src/crypt/"
+        },
+        {
+          "text": "Des.js",
+          "path": "src/crypt/"
+        },
+        {
+          "text": "Task.js",
+          "path": "src/tasks/"
+        },
+        {
+          "text": "TaskManager.js",
+          "path": "src/tasks/"
+        },
+        {
+          "text": "Iframe.js",
+          "path": "src/io/"
+        },
+        {
+          "text": "Xdr.js",
+          "path": "src/io/"
+        },
+        {
+          "text": "JsonRpc.js",
+          "path": "src/rpc/"
+        },
+        {
+          "text": "Api.js",
+          "path": "src/api/"
+        },
+        {
+          "text": "Proxy.js",
+          "path": "src/api/"
+        },
+        {
+          "text": "Store.js",
+          "path": "src/api/"
+        },
+        {
+          "text": "Rpc.js",
+          "path": "src/api/"
+        },
+        {
+          "text": "RpcEvents.js",
+          "path": "src/api/"
+        }
+      ]
+    },
+    {
+      "name": "Common Core (without Ext4)",
+      "file": "builds/common-core-without-ext4.js",
+      "isDebug": true,
+      "fileIncludes":
+      [
+        {
+          "text": "Common.js",
+          "path": "src/"
+        },
+        {
+          "text": "Logger.js",
+          "path": "src/log/"
+        },
+        {
+          "text": "Langs.js",
+          "path": "src/"
+        },
+        {
+          "text": "Bandwidth.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "ConnectionChecker.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Xml.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Screenshot.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Timer.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Session.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Date.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Array.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Url.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Debug.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Format.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Gravatar.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "FullScreen.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Browser.js",
+          "path": "src/capabilities/"
+        },
+        {
+          "text": "BrowserPlugins.js",
+          "path": "src/capabilities/"
         },
         {
           "text": "Base64.js",
@@ -147,12 +287,8 @@
           "path": "src/"
         },
         {
-          "text": "Log.js",
-          "path": "src/"
-        },
-        {
-          "text": "Cookies.js",
-          "path": "src/"
+          "text": "Logger.js",
+          "path": "src/log/"
         },
         {
           "text": "Langs.js",
@@ -187,6 +323,10 @@
           "path": "src/utils/"
         },
         {
+          "text": "Array.js",
+          "path": "src/utils/"
+        },
+        {
           "text": "Url.js",
           "path": "src/utils/"
         },
@@ -205,6 +345,14 @@
         {
           "text": "FullScreen.js",
           "path": "src/utils/"
+        },
+        {
+          "text": "Browser.js",
+          "path": "src/capabilities/"
+        },
+        {
+          "text": "BrowserPlugins.js",
+          "path": "src/capabilities/"
         },
         {
           "text": "Base64.js",
@@ -299,6 +447,210 @@
           "path": "src/ui/login/"
         },
         {
+          "text": "LoadingLayer.js",
+          "path": "src/ui/loading/"
+        },
+        {
+          "text": "FormFieldRequired.js",
+          "path": "src/ui/overrides/"
+        },
+        {
+          "text": "FormFieldIcon.js",
+          "path": "src/ui/overrides/"
+        },
+        {
+          "text": "HelpText.js",
+          "path": "src/ui/overrides/"
+        },
+        {
+          "text": "FieldFocus.js",
+          "path": "src/ui/overrides/"
+        },
+        {
+          "text": "VTypes.js",
+          "path": "src/ui/overrides/"
+        },
+        {
+          "text": "Toggler.js",
+          "path": "src/ui/overrides/"
+        }
+      ]
+    },
+    {
+      "name": "Common All (without Ext4)",
+      "file": "builds/common-all-without-ext4.js",
+      "isDebug": true,
+      "fileIncludes":
+      [
+        {
+          "text": "Common.js",
+          "path": "src/"
+        },
+        {
+          "text": "Logger.js",
+          "path": "src/log/"
+        },
+        {
+          "text": "Langs.js",
+          "path": "src/"
+        },
+        {
+          "text": "Bandwidth.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "ConnectionChecker.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Xml.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Screenshot.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Timer.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Session.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Date.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Array.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Url.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Debug.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Format.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Gravatar.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "FullScreen.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Browser.js",
+          "path": "src/capabilities/"
+        },
+        {
+          "text": "BrowserPlugins.js",
+          "path": "src/capabilities/"
+        },
+        {
+          "text": "Base64.js",
+          "path": "src/crypt/"
+        },
+        {
+          "text": "Md5.js",
+          "path": "src/crypt/"
+        },
+        {
+          "text": "Des.js",
+          "path": "src/crypt/"
+        },
+        {
+          "text": "Task.js",
+          "path": "src/tasks/"
+        },
+        {
+          "text": "TaskManager.js",
+          "path": "src/tasks/"
+        },
+        {
+          "text": "Iframe.js",
+          "path": "src/io/"
+        },
+        {
+          "text": "Xdr.js",
+          "path": "src/io/"
+        },
+        {
+          "text": "JsonRpc.js",
+          "path": "src/rpc/"
+        },
+        {
+          "text": "Api.js",
+          "path": "src/api/"
+        },
+        {
+          "text": "Proxy.js",
+          "path": "src/api/"
+        },
+        {
+          "text": "Store.js",
+          "path": "src/api/"
+        },
+        {
+          "text": "Rpc.js",
+          "path": "src/api/"
+        },
+        {
+          "text": "RpcEvents.js",
+          "path": "src/api/"
+        },
+        {
+          "text": "IconMgr.js",
+          "path": "src/ui/"
+        },
+        {
+          "text": "Grid.js",
+          "path": "src/ui/"
+        },
+        {
+          "text": "Notificator.js",
+          "path": "src/ui/"
+        },
+        {
+          "text": "Info.js",
+          "path": "src/ui/"
+        },
+        {
+          "text": "Toggler.js",
+          "path": "src/ui/"
+        },
+        {
+          "text": "Dashboard.js",
+          "path": "src/ui/dashboard/"
+        },
+        {
+          "text": "Navigation.js",
+          "path": "src/ui/dashboard/"
+        },
+        {
+          "text": "AppWindow.js",
+          "path": "src/ui/dashboard/"
+        },
+        {
+          "text": "Defaults.js",
+          "path": "src/ui/dashboard/"
+        },
+        {
+          "text": "LoginPanel.js",
+          "path": "src/ui/login/"
+        },
+        {
+          "text": "LoadingLayer.js",
+          "path": "src/ui/loading/"
+        },
+        {
           "text": "FormFieldRequired.js",
           "path": "src/ui/overrides/"
         },
@@ -339,6 +691,10 @@
         },
         {
           "text": "notificator.css",
+          "path": "resources/themes/default/css/"
+        },
+        {
+          "text": "loadinglayer.css",
           "path": "resources/themes/default/css/"
         }
       ]

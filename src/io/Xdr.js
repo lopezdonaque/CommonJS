@@ -111,7 +111,7 @@ CommonExt.define( 'Common.io.Xdr',
 
     window.xdr_cache[ this._id ] = xdr;
 
-    xdr.send( Ext.isString( this.data ) ? this.data : CommonExt.encode( this.data ) );
+    xdr.send( CommonExt.isString( this.data ) ? this.data : CommonExt.encode( this.data ) );
   },
 
 
@@ -164,7 +164,7 @@ CommonExt.define( 'Common.io.Xdr',
   _clean: function()
   {
     var xdr = window.xdr_cache[ this._id ];
-    xdr.onload = xdr.onerror = xdr.ontimeout = Ext.emptyFn;
+    xdr.onload = xdr.onerror = xdr.ontimeout = CommonExt.emptyFn;
     xdr = undefined;
     delete window.xdr_cache[ this._id ];
   }

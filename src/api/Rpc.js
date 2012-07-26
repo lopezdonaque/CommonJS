@@ -191,11 +191,11 @@ CommonExt.define( 'Common.api.Rpc',
   {
     if( Common.utils.Url.isCrossDomain( this.endpoint ) )
     {
-      if( Ext.isIE6 || Ext.isIE7 )
+      if( CommonExt.isIE6 || CommonExt.isIE7 )
       {
         this._request_with_iframe();
       }
-      else if( Ext.isIE )
+      else if( CommonExt.isIE )
       {
         this._request_with_xdr();
       }
@@ -334,11 +334,11 @@ CommonExt.define( 'Common.api.Rpc',
 
     var url = this.endpoint;
 
-    url = Ext.urlAppend( url, Ext.urlEncode( params ) );
+    url = CommonExt.urlAppend( url, CommonExt.urlEncode( params ) );
 
     if( this.nocache )
     {
-      url = Ext.urlAppend( url, '_dc=' + ( new Date().getTime() ) );
+      url = CommonExt.urlAppend( url, '_dc=' + ( new Date().getTime() ) );
     }
 
     return url;
@@ -357,7 +357,7 @@ CommonExt.define( 'Common.api.Rpc',
     // Check if the response is a valid json string
     try
     {
-      var response = Ext.decode( resp );
+      var response = CommonExt.decode( resp );
     }
     catch( e )
     {

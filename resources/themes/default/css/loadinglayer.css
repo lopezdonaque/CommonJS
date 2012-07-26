@@ -2,30 +2,23 @@
 .common-loadinglayer
 {
   z-index: 9999;
-  /*width: 150px;*/
-
-  height: 30px;
-  _height: 40px;
-
-  position: fixed;
-  _position: absolute;
-
-  bottom: 0;
-  _bottom: auto;
-
-  _top: expression( ( 0 - loading_navigation.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
-
-  left: 0;
-  background-color: InfoBackground;
-  font-family: verdana;
+  width: auto;
+  background: InfoBackground url( 'images/loading/loading.gif' ) no-repeat 5px 9px;
+  font-family: verdana,serif;
   font-size: 12px;
   font-weight: bold;
-  padding: 8px 8px 0 10px;
+  padding: 10px 8px 10px 30px;
   color: #777777;
   border: 1px solid #cccccc;
   white-space: nowrap;
-
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
+}
+
+.common-loadinglayer-left-bottom
+{
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }

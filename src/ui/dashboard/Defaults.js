@@ -70,14 +70,14 @@ Common.ui.dashboard.Defaults =
     });
 
 
-    // WORKAROUND: fix bug on IE - When two modals are opened and try to close one, "Invalid argument" error is raised
+    /*// WORKAROUND: fix bug on IE - When two modals are opened and try to close one, "Invalid argument" error is raised
     if( Ext.isIE )
     {
       Ext.useShims = true; //automatic IFrame backgrounds
       Ext.form.ComboBox.prototype.shadow = false;
       Ext.Panel.prototype.shadow = false;
       Ext.menu.Menu.prototype.shadow = false;
-    }
+    }*/
 
 
 

@@ -132,11 +132,11 @@ CommonExt.define( 'Common.rpc.JsonRpc',
   {
     if( Common.utils.Url.isCrossDomain( this.endpoint ) )
     {
-      if( Ext.isIE6 || Ext.isIE7 )
+      if( CommonExt.isIE6 || CommonExt.isIE7 )
       {
         throw '[Common.rpc.JsonRpc.request] IE6 and IE7 does not support cross domain JsonRpc requests';
       }
-      else if( Ext.isIE )
+      else if( CommonExt.isIE )
       {
         this._request_with_xdr();  // WARNING, xdr only allows text/plain, but jsonrpc requires application/json
       }
@@ -187,7 +187,7 @@ CommonExt.define( 'Common.rpc.JsonRpc',
   {
     Common.Log.debug( '[Common.rpc.JsonRpc._request_with_xhr] Request with xhr', this );
 
-    Ext.Ajax.request(
+    CommonExt.Ajax.request(
     {
       url: this.endpoint,
       timeout: this.timeout,
@@ -229,7 +229,7 @@ CommonExt.define( 'Common.rpc.JsonRpc',
    */
   _success: function( response )
   {
-    var resp = Ext.decode( response );
+    var resp = CommonExt.decode( response );
 
     if( !resp.error )
     {

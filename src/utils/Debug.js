@@ -15,7 +15,7 @@ CommonExt.define( 'Common.utils.Debug',
    */
   getDebugParams: function()
   {
-    if( !Common.Cookies.get( 'start_debug_api' ) )
+    if( !CommonExt.util.Cookies.get( 'start_debug_api' ) )
     {
       //return { start_debug: 0 }; // Forces to stop debug because ZendDebuggerCookie could be present on different domain and the bookmarklet can not remove it
       return {};
@@ -39,7 +39,7 @@ CommonExt.define( 'Common.utils.Debug',
 
     CommonExt.Object.each( params, function( key, value )
     {
-      var cookie = Common.Cookies.get( key );
+      var cookie = CommonExt.util.Cookies.get( key );
 
       if( !cookie )
       {
@@ -47,7 +47,7 @@ CommonExt.define( 'Common.utils.Debug',
       }
       else
       {
-        params[ key ] = Common.Cookies.get( key );
+        params[ key ] = CommonExt.util.Cookies.get( key );
       }
     });
 

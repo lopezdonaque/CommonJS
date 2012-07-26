@@ -116,7 +116,7 @@ Common.api.Store = Ext.extend( Ext.data.Store,
     if( this.list_options.search_filters.length > 0 )
     {
       var search_value = store.baseParams.query || ''; // TODO: When the value is '', the filter should not be sent
-      Ext.each( this.list_options.search_filters[ 0 ].filters, function( item, index, allItems )
+      CommonExt.Array.each( this.list_options.search_filters[ 0 ].filters, function( item, index, allItems )
       {
         item.value = search_value;
       });
@@ -144,9 +144,9 @@ Common.api.Store = Ext.extend( Ext.data.Store,
   {
     var is_list_options = false;
 
-    if( Ext.isObject( arg ) )
+    if( CommonExt.isObject( arg ) )
     {
-      Ext.iterate( arg, function( key, value, obj )
+      CommonExt.Object.each( arg, function( key, value, obj )
       {
         if( [ 'page', 'rows_per_page', 'sort_column', 'sort_type', 'filters', 'search_filters' ].indexOf( key ) != -1 )
         {

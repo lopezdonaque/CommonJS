@@ -2,6 +2,11 @@
 /**
  * Manages loading layer
  *
+ * Usage:
+ *     Common.ui.loading.LoadingLayer.show();
+ *     Common.ui.loading.LoadingLayer.show( 'Custom text' );
+ *     Common.ui.loading.LoadingLayer.hide();
+ *
  */
 CommonExt.define( 'Common.ui.loading.LoadingLayer',
 {
@@ -13,6 +18,7 @@ CommonExt.define( 'Common.ui.loading.LoadingLayer',
    * Loading layer instance
    *
    * @var {Ext.Container}
+   * @private
    */
   _loading_layer: null,
 
@@ -30,19 +36,16 @@ CommonExt.define( 'Common.ui.loading.LoadingLayer',
     {
       this._loading_layer = new Ext.Container(
       {
-        cls: 'common-loadinglayer',
+        cls: 'common-loadinglayer common-loadinglayer-left-bottom',
         renderTo: Ext.getBody()
       });
     }
 
     // Update the loading text
-    this._loading_layer.el.update( '<img src="' + window.settings.workspace.theme_path + '/images/common/loading_standard.gif">&nbsp;' + ( text || Common.Langs.get( 'loading' ) ) );
+    this._loading_layer.el.update( text || Common.Langs.get( 'loading' ) );
 
     // Appear it
-    this._loading_layer.el.fadeIn(
-    {
-      duration:.3
-    });
+    this._loading_layer.el.fadeIn( { duration: .3 } );
   },
 
 
@@ -60,10 +63,7 @@ CommonExt.define( 'Common.ui.loading.LoadingLayer',
     }
 
     // Fade it
-    this._loading_layer.el.fadeOut(
-    {
-      duration: .3
-    });
+    this._loading_layer.el.fadeOut( { duration: .3 } );
   }
 
 });

@@ -233,7 +233,7 @@ CommonExt.define( 'Common.utils.Session',
     // Call the url to renew the session
     if( this.config.renew_url )
     {
-      Ext.Ajax.request(
+      CommonExt.Ajax.request(
       {
         url: this.config.renew_url,
         success: CommonExt.bind( function(){ this.refresh(); }, this ),

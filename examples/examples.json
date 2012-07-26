@@ -31,6 +31,14 @@
         "icon": "shared/screens/blank.gif",
         "desc": "Timer examples",
         "status": ""
+      },
+
+      {
+        "text": "Loading layer",
+        "url": "loadinglayer/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "Loading layer examples",
+        "status": ""
       }
     ]
   }

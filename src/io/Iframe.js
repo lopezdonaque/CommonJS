@@ -168,7 +168,7 @@ CommonExt.define( 'Common.io.Iframe',
     // Add data parameters as hidden inputs
     CommonExt.Object.each( this.data, function( key, value )
     {
-      if( Ext.isObject( value ) )
+      if( CommonExt.isObject( value ) )
       {
         value = CommonExt.encode( value );
       }

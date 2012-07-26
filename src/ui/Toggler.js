@@ -94,7 +94,7 @@ CommonExt.define( 'Common.ui.Toggler',
 
 
     // Get the toggler options for the dispatcher
-    var options_position = Ext.getCmp( key_object ).toggler_observers.pluck( 'key_dispatcher' ).indexOf( key_dispatcher );
+    var options_position = CommonExt.Array.pluck( Ext.getCmp( key_object ).toggler_observers, 'key_dispatcher' ).indexOf( key_dispatcher );
     var toggle_options = Ext.getCmp( key_object ).toggler_observers[ options_position ];
     //Common.Log.debug( '[Common.ui.Toggler._element_toggle] toggle value to ' + toggle_options.toggle_type + ' it: ' + toggle_options.toggle_value );
 
@@ -166,7 +166,7 @@ CommonExt.define( 'Common.ui.Toggler',
    *
    * @private
    * @param {String} key_dispatcher
-   * @return string
+   * @return {String}
    */
   _get_dispatcher_value: function( key_dispatcher )
   {

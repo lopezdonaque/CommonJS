@@ -1,13 +1,12 @@
 
-Ext.ns( 'Common.ui.dashboard' );
-
-
 /**
  * Dashboard navigation manager
  *
  */
-Common.ui.dashboard.Navigation =
+CommonExt.define( 'Common.ui.dashboard.Navigation',
 {
+  singleton: true,
+
 
   /**
    * Navigates to other application tab
@@ -35,7 +34,7 @@ Common.ui.dashboard.Navigation =
       activate: true
     };
 
-    Ext.apply( _options, options );
+    _options = CommonExt.merge( _options, options );
 
     // Check if the app_panel exists and create it
     if( !( app_panel = Ext.getCmp( app_name ) ) )
@@ -77,4 +76,4 @@ Common.ui.dashboard.Navigation =
     }
   }
 
-};
+});

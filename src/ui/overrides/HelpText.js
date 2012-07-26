@@ -56,12 +56,12 @@ CommonExt.define( 'Common.ui.overrides.HelpText',
       {
         //this.el.setSize( w, h );
 
-        if( Ext.isDefined( w ) )
+        if( CommonExt.isDefined( w ) )
         {
           this.el.setWidth( w );
         }
 
-        if( Ext.isDefined( h ) )
+        if( CommonExt.isDefined( h ) )
         {
           this.el.setHeight( h );
         }

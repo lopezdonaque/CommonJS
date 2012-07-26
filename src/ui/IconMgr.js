@@ -76,7 +76,7 @@ CommonExt.define( 'Common.ui.IconMgr',
    */
   setIconsBase: function( name, path )
   {
-    if( ! this._iconsBases[ name ] )
+    if( !this._iconsBases[ name ] )
     {
       var styleSheetId = this.PREFIX + name;
       Ext.util.CSS.createStyleSheet( '/* IconMgr stylesheet */\n', styleSheetId );
@@ -103,7 +103,7 @@ CommonExt.define( 'Common.ui.IconMgr',
   getIconBase: function( baseName, icon )
   {
     // Check if icons base exists
-    if( ! this._iconsBases[ baseName ] )
+    if( !this._iconsBases[ baseName ] )
     {
       throw 'Icon base [' + baseName + '] not found';
     }
@@ -147,7 +147,7 @@ CommonExt.define( 'Common.ui.IconMgr',
     };
 
     // Append CSS style text
-    if( ! Ext.isIE )
+    if( !CommonExt.isIE )
     {
       var styleSheet = Ext.get( this.PREFIX + baseName );
       styleSheet.dom.sheet.insertRule( styleBody, styleSheet.dom.sheet.cssRules.length );

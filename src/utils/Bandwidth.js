@@ -23,6 +23,14 @@ CommonExt.define( 'Common.utils.Bandwidth',
 
 
   /**
+   * Event upload progress constant
+   *
+   * @property {String}
+   */
+  EVENT_UPLOAD_PROGRESS: 'upload_progress',
+
+
+  /**
    * Upload result
    *
    * @private
@@ -108,6 +116,8 @@ CommonExt.define( 'Common.utils.Bandwidth',
       this._finish();
       return;
     }
+
+    this.fireEvent( this.EVENT_UPLOAD_PROGRESS, parseInt( ( this._tests_done / this._num_tests ) * 100 ) );
 
     var start_time = new Date().getTime();
 
