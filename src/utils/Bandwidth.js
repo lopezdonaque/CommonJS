@@ -6,6 +6,8 @@
  *
  *     var bw = new Common.utils.Bandwidth( 'http://domain.com/bwtest.php' );
  *     bw.on( bw.EVENT_UPLOAD_FINISHED, function(){} );
+ *     bw.on( bw.EVENT_UPLOAD_PROGRESS, function(){} );
+ *     bw.on( bw.EVENT_UPLOAD_ERROR, function(){} );
  *     bw.start_upload_test()
  *
  */
@@ -28,6 +30,14 @@ CommonExt.define( 'Common.utils.Bandwidth',
    * @property {String}
    */
   EVENT_UPLOAD_PROGRESS: 'upload_progress',
+
+
+  /**
+   * Event upload error constant
+   *
+   * @property {String}
+   */
+  EVENT_UPLOAD_ERROR: 'upload_error',
 
 
   /**
@@ -82,7 +92,6 @@ CommonExt.define( 'Common.utils.Bandwidth',
 
   /**
    * Starts upload test
-   *
    */
   start_upload_test: function()
   {
@@ -92,7 +101,7 @@ CommonExt.define( 'Common.utils.Bandwidth',
     this._upload_data = CommonExt.String.repeat( 'x', this._test_size );
 
     // Reset variables
-    this._results = new Array();
+    this._results = [];
     this._tests_done = 0;
 
     this._do_tests();
@@ -131,6 +140,10 @@ CommonExt.define( 'Common.utils.Bandwidth',
         var current_time = new Date().getTime();
         this._results.push( ( current_time - start_time ) / 1000 );
         this._do_tests();
+      },
+      failure: function()
+      {
+        this.fireEvent( this.EVENT_UPLOAD_ERROR );
       }
     });
   },

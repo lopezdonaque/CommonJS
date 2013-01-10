@@ -2,19 +2,26 @@
 /**
  * #Examples:
  *
- * Using global endpoint and user_data or token:
+ * Available endpoint configurations:
+ *     // 1. Endpoint from the same domain
+ *     Common.api.Api.endpoint = '/endpoint.php';
  *
- *     Common.api.Api.endpoint = 'http://webservices.domain.com/api';
+ *     // 2. Endpoint from distinct domain (cross-domain)
+ *     Common.api.Api.endpoint = 'http://api.domain.com/';
+ *
+ *     // 2.1 Endpoint from distinct domain (cross-domain) + ajax proxy
+ *     // Iframe transport causes continuous loadings while requests (in IE7) and
+ *     // XDomainRequest has some restrictions and bugs (is deprecated in IE10)
+ *     // so we recommend use an ajax proxy for IE<10
+ *     Common.api.Api.endpoint = 'http://api.domain.com/';
+ *     Common.api.Api.ajax_proxy = 'ajax_proxy.php'; // Required for IE<10
+ *
+ *
+ * Configure authentication token:
  *     Common.api.Api.token = '89c57dfdc2dcb5d3380f9edce9d806459fee14fa';
- *     Common.api.Api.user_data =
- *     {
- *       client_cif: false,
- *       customer_id: 23,
- *       distributor_id: -1,
- *       parent_distributor_id: -1,
- *       user_id: 327
- *     };
  *
+ *
+ * Request example:
  *     var rpc = new Common.api.Rpc( 'users', 'get_user', [ 327 ] );
  *     rpc.on( Common.api.RpcEvents.SUCCESS, function( data ){ Common.Log.debug( 'success', data ); }, scope );
  *     rpc.on( Common.api.RpcEvents.ERROR, function( data ){ Common.Log.debug( 'error', data ); }, scope );
@@ -22,19 +29,16 @@
  *
  *
  * Using shorthands:
- *
  *     var rpc = new Common.api.Rpc( 'users', 'get_user', [ 327 ] );
  *     rpc.on_success( function( data ){ Common.Log.debug( 'success', data ); }, scope );
  *     rpc.on_error( function( data ){ Common.Log.debug( 'error', data ); }, scope );
  *     rpc.request();
  *
  *
- * Using custom endpoint and user_data:
- *
+ * Using custom options on a single request:
  *     var options =
  *     {
- *       endpoint: 'xx',
- *       user_data: { xx },
+ *       endpoint: 'http://api.domain.com/',
  *       token: '89c57dfdc2dcb5d3380f9edce9d806459fee14fa'
  *     };
  *     var rpc = new Common.api.Rpc( 'users', 'get_user', [ 25 ], options );
@@ -75,11 +79,12 @@ CommonExt.define( 'Common.api.Rpc',
 
 
     /**
-     * User data
+     * Ajax Proxy URL
+     * It must be configured to avoid XDomainRequest restrictions and bugs
      *
-     * @property {Object}
+     * @property {String}
      */
-    user_data: null,
+    ajax_proxy: null,
 
 
     /**
@@ -157,21 +162,14 @@ CommonExt.define( 'Common.api.Rpc',
     this.method = method;
     this.args = args;
 
+    this._detect_endpoint();
+
     var opts = options || {};
 
-    this.endpoint = opts.endpoint || Common.api.Api.endpoint;
-
-    // Check if the Api endpoint has been defined
-    if( !this.endpoint )
-    {
-      throw '[Common.api.Rpc.constructor] Endpoint is not defined';
-    }
-
-    this.user_data = opts.user_data || Common.api.Api.user_data;
     this.token = opts.token || Common.api.Api.token;
 
-    // Check if the user data or token has been defined
-    if( !this.user_data && !this.token )
+    // Check if the token has been defined
+    if( !this.token )
     {
       //throw '[Common.api.Rpc.constructor] User data or token should be defined';
     }
@@ -184,25 +182,22 @@ CommonExt.define( 'Common.api.Rpc',
 
   /**
    * Request data
-   *
-   * @param {Object=} options
    */
-  request: function( options )
+  request: function()
   {
-    if( Common.utils.Url.isCrossDomain( this.endpoint ) )
+    if( !Common.utils.Url.isCrossDomain( this.endpoint ) )
     {
-      if( CommonExt.isIE6 || CommonExt.isIE7 )
-      {
-        this._request_with_iframe();
-      }
-      else if( CommonExt.isIE )
-      {
-        this._request_with_xdr();
-      }
-      else
-      {
-        this._request_with_xhr();
-      }
+      this._request_with_xhr();
+      return;
+    }
+
+    if( CommonExt.isIE6 || CommonExt.isIE7 )
+    {
+      this._request_with_iframe();
+    }
+    else if( CommonExt.isIE && CommonExt.ieVersion < 10 )
+    {
+      this._request_with_xdr();
     }
     else
     {
@@ -219,7 +214,7 @@ CommonExt.define( 'Common.api.Rpc',
    */
   _request_with_xhr: function()
   {
-    Common.Log.debug( '[Common.api.Rpc.request] Request with xhr: ', this.entity, this.method );
+    Common.Log.debug( '[Common.api.Rpc._request_with_xhr] Request with xhr: ', this.entity, this.method );
 
     var data = this._get_request_data();
     this.fireEvent( 'beforerequest', { data: data } );
@@ -232,7 +227,16 @@ CommonExt.define( 'Common.api.Rpc',
       timeout: this.timeout,
       params: data,
       success: CommonExt.bind( function( resp ){ this._check_response( resp.responseText ); }, this ),
-      failure: CommonExt.bind( this._handle_failure, this )
+      failure: CommonExt.bind( function( resp )
+      {
+        // Check if it's user aborted (the user hit Esc or navigated away from the current page before an AJAX call was done)
+        if( resp.getAllResponseHeaders && ( !resp.getAllResponseHeaders() || CommonExt.Object.getSize( resp.getAllResponseHeaders() ) == 0 ) )
+        {
+          return;
+        }
+
+        this._handle_failure();
+      }, this )
     });
   },
 
@@ -245,7 +249,7 @@ CommonExt.define( 'Common.api.Rpc',
    */
   _request_with_xdr: function()
   {
-    Common.Log.debug( '[Common.api.Rpc.request] Request with xdr: ', this.entity, this.method );
+    Common.Log.debug( '[Common.api.Rpc._request_with_xdr] Request with xdr: ', this.entity, this.method );
 
     var data = this._get_request_data();
     this.fireEvent( 'beforerequest', { data: data } );
@@ -273,7 +277,7 @@ CommonExt.define( 'Common.api.Rpc',
    */
   _request_with_iframe: function()
   {
-    Common.Log.debug( '[Common.api.Rpc.request] Request with iframe: ', this.entity, this.method );
+    Common.Log.debug( '[Common.api.Rpc._request_with_iframe] Request with iframe: ', this.entity, this.method );
 
     var data = this._get_request_data();
     this.fireEvent( 'beforerequest', { data: data } );
@@ -306,11 +310,13 @@ CommonExt.define( 'Common.api.Rpc',
     return {
       transaction_id: this._id,
       format: this.format,
+      token: this.token,
       entity: this.entity,
       method: this.method,
-      arguments: CommonExt.encode( this.args || [] ),
-      user_data: CommonExt.encode( this.user_data ),
-      token: this.token
+
+      // Workaround: We must to do a double encode to be sure all "undefined" are converted to "null"
+      // See: http://www.sencha.com/forum/showthread.php?134699-Ext.encode()-error
+      arguments: CommonExt.encode( CommonExt.decode( CommonExt.encode( this.args || [] ) ) )
     };
   },
 
@@ -326,21 +332,21 @@ CommonExt.define( 'Common.api.Rpc',
   {
     var params = {};
 
-    // Debug parameters (used only for development)
-    if( this.debug )
+    // Add debug parameters to the endpoint URL (used only for development)
+    if( this.debug && !( CommonExt.isIE && CommonExt.ieVersion < 10 ) )
     {
-      Ext.apply( params, Common.utils.Debug.getDebugParams() );
+      CommonExt.merge( params, Common.utils.Debug.getDebugParams() );
     }
 
-    var url = this.endpoint;
-
-    url = CommonExt.urlAppend( url, CommonExt.urlEncode( params ) );
+    // ONLY to identify the request when is displayed in Firebug
+    CommonExt.merge( params, { '_rid': this.entity + '-' + this.method } );
 
     if( this.nocache )
     {
-      url = CommonExt.urlAppend( url, '_dc=' + ( new Date().getTime() ) );
+      CommonExt.merge( params, { '_dc': new Date().getTime() } );
     }
 
+    var url = CommonExt.urlAppend( this.endpoint, CommonExt.urlEncode( params ) );
     return url;
   },
 
@@ -371,7 +377,7 @@ CommonExt.define( 'Common.api.Rpc',
     }
     else
     {
-      Common.Log.debug( '[Common.api.Rpc._check_response] Success', '\n', this, '\n', response );
+      Common.Log.debug( '[Common.api.Rpc._check_response] Success', response );
       this.fireEvent( Common.api.RpcEvents.SUCCESS, response, this );
       Common.api.RpcEvents.fireEvent( Common.api.RpcEvents.SUCCESS, response, this );
     }
@@ -384,10 +390,7 @@ CommonExt.define( 'Common.api.Rpc',
    *
    * @private
    */
-  _destroy_trans: function()
-  {
-
-  },
+  _destroy_trans: function(){},
 
 
 
@@ -398,7 +401,7 @@ CommonExt.define( 'Common.api.Rpc',
    */
   _handle_failure: function()
   {
-    Common.Log.warning( '[Common.api.Rpc._handle_failure] Timeout failure', this );
+    Common.Log.warn( '[Common.api.Rpc._handle_failure] Timeout failure', this );
 
     this._destroy_trans();
     this.trans = false;
@@ -430,6 +433,30 @@ CommonExt.define( 'Common.api.Rpc',
   on_error: function( callback, scope )
   {
     this.on( Common.api.RpcEvents.ERROR, callback, scope );
+  },
+
+
+
+  /**
+   * Detects which endpoint should be used based on local and global configuration options
+   *
+   * @private
+   */
+  _detect_endpoint: function()
+  {
+    this.endpoint = this.endpoint || Common.api.Api.endpoint;
+    this.ajax_proxy = this.ajax_proxy || Common.api.Api.ajax_proxy;
+
+    if( Common.utils.Url.isCrossDomain( this.endpoint ) && CommonExt.isIE && CommonExt.ieVersion < 10 && this.ajax_proxy )
+    {
+      this.endpoint = this.ajax_proxy;
+    }
+
+    // Check if the Api endpoint has been defined
+    if( !this.endpoint )
+    {
+      throw '[Common.api.Rpc._detect_endpoint] Endpoint is not defined';
+    }
   }
 
 });

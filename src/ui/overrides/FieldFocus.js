@@ -36,7 +36,7 @@ CommonExt.define( 'Common.ui.overrides.FieldFocus',
   {
     if( this._is_applied )
     {
-      Common.Log.warning( '[Common.ui.overrides.FieldFocus.apply] Already applied' );
+      Common.Log.warn( '[Common.ui.overrides.FieldFocus.apply] Already applied' );
       return;
     }
 

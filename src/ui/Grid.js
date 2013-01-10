@@ -9,6 +9,19 @@ Ext.ns( 'Common.ui' );
  *     Common.ui.Grid.prototype.action_button_config.tooltip = 'View actions';
  *     Common.ui.Grid.prototype.action_button_config.iconCls = 'fugue fugue-alarm-clock';
  *
+ * Use search field filters of the store to automatically add a search field and use its value as the value of each filter:
+ *     store.search_field_filters =
+ *     [
+ *       {
+ *         column: 'name',
+ *         operator: 'equals'
+ *       },
+ *       {
+ *         column: 'surname',
+ *         operator: 'equals'
+ *       }
+ *     ];
+ *
  */
 Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
 {
@@ -37,14 +50,6 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
    * @property {Ext.menu.Menu}
    */
   submenu: null,
-
-
-  /**
-   * Filter to search grid records
-   *
-   * @property {Array}
-   */
-  search_filters: null,
 
 
   /**
@@ -137,6 +142,7 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
   /**
    * Init component
    *
+   * @private
    */
   initComponent: function()
   {
@@ -182,7 +188,7 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
     {
       this.selModel = null;
     }
-    else if( ! this.selModel )
+    else if( !this.selModel )
     {
       this.selModel = new Ext.grid.RowSelectionModel(
       {
@@ -190,10 +196,8 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
       });
     }
 
-
     // Top toolbar
     this.tbar = this._get_top_toolbar();
-
 
     // Pagination
     var default_pagination_options =
@@ -208,20 +212,13 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
 
     Ext.apply( default_pagination_options, this.pagination );
 
-
     this.store.on( 'beforeload', function( store, options )
     {
-//TODO: dejar solo el list_options cuando se haya eliminado el dashboard.jsonstore
-      if( store.list_options && this.page_sizer && !this.hide_paging_toolbar )
+      if( store.list_options )
       {
         store.list_options.rows_per_page = this.getBottomToolbar().pageSize;
       }
-      else
-      {
-        store.baseParams.limit = this.getBottomToolbar().pageSize;
-      }
     }, this );
-
 
     // Page sizer
     if( this.page_sizer )
@@ -252,51 +249,38 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
    */
   _get_top_toolbar: function()
   {
-    //check if exists some top toolbar action
-    if( this.left_actions.length == 0 && this.right_actions.length == 0 && this.search_filters == null )
+    // Check if exists some top toolbar action
+    if( this.left_actions.length == 0 && this.right_actions.length == 0 && ( !this.store.search_field_filters || this.store.search_field_filters.length == 0 ) )
     {
       return null;
     }
 
     var items = [];
 
-    //LEFT ACTIONS
+    // LEFT ACTIONS
     if( this.left_actions.length > 0 )
     {
       items = items.concat( this.left_actions );
     }
 
-    //SEPARATOR
+    // SEPARATOR
     items.push( new Ext.Toolbar.Fill() );
 
 
-    //RIGHT ACTIONS
+    // RIGHT ACTIONS
     if( this.right_actions.length > 0 )
     {
       items = items.concat( this.right_actions );
     }
 
-    //SEARCH FILTER
-    if( this.search_filters )
+    // SEARCH FIELD FILTERS
+    if( this.store.search_field_filters && this.store.search_field_filters.length > 0 )
     {
       this._search_field = new Ext.ux.form.SearchField(
       {
         width: 180,
         store: this.store,
-        emptyText: Common.Langs.get( 'search' ),
-        listeners:
-        {
-          scope: this,
-          added: function()
-          {
-            var search_filter =
-            {
-              filters: this.search_filters
-            };
-
-            this.store.search_filters = [ search_filter ];
-          }
-        }
+        emptyText: Common.Langs.get( 'search' )
       });
 
       if( this.right_actions.length > 0 )
@@ -398,7 +382,7 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
     // Check if exists "_prepare" method (to modify menu items - enable, disable, hide, etc.)
     if( this.submenu._prepare )
     {
-      if( this.submenu._prepare( records ) === false )
+      if( this.submenu._prepare.apply( this.submenu.scope || this.submenu, [ records ] ) === false )
       {
         return false;
       }
@@ -479,7 +463,7 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
 
     if( !Ext.DomQuery.selectNode( '#' + id ) )
     {
-      return false;
+      return;
     }
 
     var config = CommonExt.Object.merge( this.action_button_config,

@@ -1,6 +1,7 @@
 
 /**
  * Api namespace
+ * You could configure global parameters to use in all the Rpc requests.
  *
  */
 CommonExt.define( 'Common.api.Api',
@@ -11,7 +12,7 @@ CommonExt.define( 'Common.api.Api',
   /**
    * Endpoint URL
    *
-   * For example: http://webservices.domain.com/api/rest.php
+   * For example: http://webservices.domain.com/api/rpc.php
    *
    * @property {String}
    */
@@ -19,20 +20,19 @@ CommonExt.define( 'Common.api.Api',
 
 
   /**
+   * Ajax Proxy URL
+   * It must be configured to avoid XDomainRequest restrictions and bugs
+   *
+   * @property {String}
+   */
+  ajax_proxy: null,
+
+
+  /**
    * Authentication token
    *
    * @property {String}
    */
-  token: null,
-
-
-  /**
-   * Authentication data
-   *
-   * TODO: In the future, this should be the authentication token
-   *
-   * @property {Object}
-   */
-  user_data: null
+  token: null
 
 });

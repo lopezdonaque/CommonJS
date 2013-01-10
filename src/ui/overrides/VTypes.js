@@ -35,7 +35,7 @@ CommonExt.define( 'Common.ui.overrides.VTypes',
   {
     if( this._is_applied )
     {
-      Common.Log.warning( '[Common.ui.overrides.VTypes.apply] Already applied' );
+      Common.Log.warn( '[Common.ui.overrides.VTypes.apply] Already applied' );
       return;
     }
 

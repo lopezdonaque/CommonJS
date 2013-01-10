@@ -53,13 +53,13 @@ CommonExt.define( 'Common.ui.dashboard.Navigation',
         }
       });
 
-      Ext.getCmp( 'app_tabs' ).add( app_panel );
+      Ext.getCmp( Common.ui.dashboard.Dashboard.prototype.apps_container_id ).add( app_panel );
     }
 
     // Active the app panel
     if( _options.activate !== false )
     {
-      Ext.getCmp( 'app_tabs' ).setActiveTab( app_panel );
+      Ext.getCmp( Common.ui.dashboard.Dashboard.prototype.apps_container_id ).setActiveTab( app_panel );
     }
 
     // Check if we must to force object reload

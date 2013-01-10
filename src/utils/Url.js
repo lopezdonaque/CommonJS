@@ -51,7 +51,7 @@ CommonExt.define( 'Common.utils.Url',
 
 
   /**
-   * Detects cross domain URL based on current document.domain
+   * Detects cross domain URL based on current "document.domain"
    *
    * @param {String} url
    * @return {String}

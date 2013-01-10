@@ -43,7 +43,7 @@ CommonExt.define( 'Common.ui.overrides.HelpText',
   {
     if( this._is_applied )
     {
-      Common.Log.warning( '[Common.ui.overrides.HelpText.apply] Already applied' );
+      Common.Log.warn( '[Common.ui.overrides.HelpText.apply] Already applied' );
       return;
     }
 

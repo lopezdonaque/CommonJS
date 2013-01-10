@@ -68,7 +68,7 @@ CommonExt.define( 'Common.ui.Toggler',
     // Check if the dispatcher exists
     if( !Ext.getCmp( key_dispatcher ) )
     {
-      Common.Log.warning( '[Common.ui.Toggler.observe] Dispatcher [' + key_dispatcher + '] not exists' );
+      Common.Log.warn( '[Common.ui.Toggler.observe] Dispatcher [' + key_dispatcher + '] not exists' );
       return false;
     }
 

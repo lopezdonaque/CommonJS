@@ -56,7 +56,7 @@ CommonExt.define( 'Common.utils.Xml',
     }
     catch( e )
     {
-      Common.Log.warning( '[Common.utils.Xml.get_node_value] Exception', e );
+      Common.Log.warn( '[Common.utils.Xml.get_node_value] Exception', e );
       return null;
     }
   }

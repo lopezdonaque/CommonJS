@@ -79,6 +79,14 @@
           "path": "src/utils/"
         },
         {
+          "text": "Page.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Html.js",
+          "path": "src/utils/"
+        },
+        {
           "text": "Browser.js",
           "path": "src/capabilities/"
         },
@@ -208,6 +216,14 @@
         },
         {
           "text": "FullScreen.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Page.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Html.js",
           "path": "src/utils/"
         },
         {
@@ -344,6 +360,14 @@
         },
         {
           "text": "FullScreen.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Page.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Html.js",
           "path": "src/utils/"
         },
         {
@@ -544,6 +568,14 @@
         },
         {
           "text": "FullScreen.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Page.js",
+          "path": "src/utils/"
+        },
+        {
+          "text": "Html.js",
           "path": "src/utils/"
         },
         {

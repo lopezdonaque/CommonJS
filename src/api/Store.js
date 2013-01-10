@@ -5,6 +5,93 @@
  * The stores retrieves a list of entities.
  * Always sends a "list_options" as last parameter of the api method.
  *
+ *
+ * Search filters example:
+ *     this.store.search_filters =
+ *     [
+ *       // Search filter 1
+ *       {
+ *         filters:
+ *         [
+ *           {
+ *             column: 'column_foo',
+ *             operator: 'integer_not_equal',
+ *             value: 3
+ *           }
+ *         ]
+ *       },
+ *
+ *       // Search filter 2
+ *       {
+ *         filters:
+ *         [
+ *           {
+ *             column: 'column_foo',
+ *             operator: 'equals',
+ *             value: 3
+ *           },
+ *           {
+ *             column: 'column_var',
+ *             operator: 'not_in',
+ *             value: '3,4'
+ *           }
+ *         ]
+ *       }
+ *     ];
+ *
+ *
+ * Search field filters example:
+ *     this.store.search_field_filters =
+ *     [
+ *       {
+ *         column: 'name',
+ *         operator: 'contains'
+ *       },
+ *       {
+ *         column: 'surname',
+ *         operator: 'contains'
+ *       }
+ *     ];
+ *
+ *
+ * Group filters association example:
+ *     this.store.group_filters_association =
+ *     {
+ *       join_type: 'OR',
+ *       group_filters:
+ *       [
+ *         // Group filter 1
+ *         {
+ *           filters:
+ *           [
+ *             {
+ *               column: 'column_foo',
+ *               operator: 'integer_not_equal',
+ *               value: 3 // Proposal
+ *             }
+ *           ]
+ *         },
+ *
+ *         // Group filter 2
+ *         {
+ *           join_type: 'AND',
+ *           filters:
+ *           [
+ *             {
+ *               column: 'column_foo',
+ *               operator: 'equals',
+ *               value: 3
+ *             },
+ *             {
+ *               column: 'column_var',
+ *               operator: 'not_in',
+ *               value: '3,4' // Accepted
+ *             }
+ *           ]
+ *         }
+ *       ]
+ *     };
+ *
  */
 Common.api.Store = Ext.extend( Ext.data.Store,
 {
@@ -13,8 +100,7 @@ Common.api.Store = Ext.extend( Ext.data.Store,
 
 
   /**
-   * Filters to send inside list_options
-   * Associative array indexed by filter name
+   * Filters to send inside list_options (Indexed by filter name only to find them for removing)
    *
    * @property {Object[]}
    */
@@ -24,9 +110,26 @@ Common.api.Store = Ext.extend( Ext.data.Store,
   /**
    * Search filters
    *
-   * @property {Object}
+   * @property {Object[]}
    */
-  search_filters: {},
+  search_filters: [],
+
+
+  /**
+   * Group filters association
+   *
+   * @var {Object}
+   */
+  group_filters_association: null,
+
+
+  /**
+   * Search field filters (array of filters without value, it is applied on each beforeload event).
+   * The values is taken from "baseParams.query" of the grid search field.
+   *
+   * @property {Object[]}
+   */
+  search_field_filters: [],
 
 
   /**
@@ -34,15 +137,7 @@ Common.api.Store = Ext.extend( Ext.data.Store,
    *
    * @property {Object}
    */
-  list_options:
-  {
-    page: null,
-    rows_per_page: null,
-    sort_column: null,
-    sort_type: null,
-    filters: [],
-    search_filters: []
-  },
+  list_options: null,
 
 
 
@@ -54,7 +149,9 @@ Common.api.Store = Ext.extend( Ext.data.Store,
   constructor: function( config )
   {
     this.filters = config.filters || {};
-    this.search_filters = config.search_filters || {};
+    this.search_filters = config.search_filters || [];
+    this.search_field_filters = config.search_field_filters || [];
+
     this.list_options =
     {
       page: 0,
@@ -62,7 +159,8 @@ Common.api.Store = Ext.extend( Ext.data.Store,
       sort_column: null,
       sort_type: null,
       filters: [],
-      search_filters: []
+      search_filters: [],
+      group_filters_association: null
     };
 
     this.proxy = new Common.api.Proxy( config.proxy_config.entity, config.proxy_config.method, config.proxy_config.args );
@@ -89,9 +187,9 @@ Common.api.Store = Ext.extend( Ext.data.Store,
   /**
    * Before load handler
    *
-   * @private
    * @param {Common.api.Store} store
    * @param {Object} options
+   * @private
    */
   _on_beforeload: function( store, options )
   {
@@ -106,20 +204,27 @@ Common.api.Store = Ext.extend( Ext.data.Store,
       this.list_options.page = ( options.params.start == 0 ) ? 1 : Math.floor( options.params.start / options.params.limit ) + 1;
     }
 
-    this.list_options.rows_per_page = options.params.limit || store.baseParams.limit;
+    this.list_options.rows_per_page = options.params.limit || store.baseParams.limit || this.list_options.rows_per_page;
     this.list_options.sort_column = options.params.sort || store.baseParams.sort;
     this.list_options.sort_type = options.params.dir || store.baseParams.dir;
     this.list_options.filters = CommonExt.Object.getValues( this.filters );
-    this.list_options.search_filters = this.search_filters;
+    this.list_options.group_filters_association = CommonExt.clone( this.group_filters_association );
+    this.list_options.search_filters = CommonExt.Object.getValues( this.search_filters );
 
-    // Prepare the search filters of the store
-    if( this.list_options.search_filters.length > 0 )
+    // Prepare the search field filters of the store
+    if( this.search_field_filters.length > 0 && store.baseParams.query )
     {
-      var search_value = store.baseParams.query || ''; // TODO: When the value is '', the filter should not be sent
-      CommonExt.Array.each( this.list_options.search_filters[ 0 ].filters, function( item, index, allItems )
+      // Prepare a new search filter
+      var search_filter = { filters: this.search_field_filters };
+
+      // Apply the same value for all filters of the new search filters
+      CommonExt.Array.each( search_filter.filters, function( filter )
       {
-        item.value = search_value;
+        filter.value = store.baseParams.query;
       });
+
+      // Add the new search filters to the search filters
+      this.list_options.search_filters.push( search_filter );
     }
 
     // Check if the last argument is a list_options, to remove it before add the new list_options
@@ -137,8 +242,8 @@ Common.api.Store = Ext.extend( Ext.data.Store,
   /**
    * Returns if the argument is a list_options
    *
-   * @private
    * @param {Object} arg
+   * @private
    */
   _is_list_options: function( arg )
   {
@@ -212,7 +317,6 @@ Common.api.Store = Ext.extend( Ext.data.Store,
 
   /**
    * Removes all filters
-   *
    */
   remove_filters: function()
   {

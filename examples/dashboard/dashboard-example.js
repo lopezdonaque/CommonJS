@@ -30,9 +30,54 @@ Ext.onReady( function()
 
       DataForm.superclass.initComponent.apply( this, arguments );
     }
-
   });
 
+
+  var HomePanel = Ext.extend( Ext.ux.Portal,
+  {
+    border: false,
+    initComponent: function()
+    {
+      this.items =
+      [
+        // Left column
+        new Ext.ux.PortalColumn(
+        {
+          columnWidth: 0.5,
+          border: false,
+          style: 'padding: 10px 0 0 10px', // At least, 1px for each side (t-r,t-l,b-r,b-l) to be a droppable when empty items
+          items:
+          [
+            new Ext.ux.Portlet(
+            {
+              title: 'Portlet 1'
+            })
+          ]
+        }),
+
+        // Right column
+        new Ext.ux.PortalColumn(
+        {
+          columnWidth: 0.5,
+          border: false,
+          style:'padding: 10px 10px 0 15px', // At least, 1px for each side (t-r,t-l,b-r,b-l) to be a droppable when empty items
+          items:
+          [
+            new Ext.ux.Portlet(
+            {
+              title: 'Portlet 2'
+            }),
+            new Ext.ux.Portlet(
+            {
+              title: 'Portlet 3'
+            })
+          ]
+        })
+      ];
+
+      HomePanel.superclass.initComponent.apply( this, arguments );
+    }
+  });
 
 
   var tbar = new Ext.Toolbar(
@@ -70,9 +115,17 @@ Ext.onReady( function()
 
   window.dashboard = new Common.ui.dashboard.Dashboard(
   {
-    top_toolbar: tbar,
-    bottom_toolbar: bbar
+    top:
+    {
+      items: tbar
+    },
+    bottom:
+    {
+      items: bbar
+    }
   });
 
   window.dashboard.start();
+
+  Common.ui.dashboard.Navigation.go_to( 'home', HomePanel, {} );
 });

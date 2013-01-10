@@ -5,15 +5,15 @@
  * #Examples:
  *
  * Set level to be displayed on the console
- *
  *     Common.Log.displayLevel = Common.Log.LEVEL_DEBUG;
  *
  *
  * Log methods by level
- *
  *     Common.Log.debug( 'text', { a: 1 }, function(){} );
  *     Common.Log.error( 'text' );
  *
+ * Show the log:
+ *     Common.Log.show_log();
  *
  */
 CommonExt.define( 'Common.log.Logger',
@@ -30,7 +30,7 @@ CommonExt.define( 'Common.log.Logger',
   LEVEL_INFO: 2,
 
   /** Warning Level constant @property {Number} */
-  LEVEL_WARNING: 3,
+  LEVEL_WARN: 3,
 
   /** Error Level constant @property {Number} */
   LEVEL_ERROR: 4,
@@ -42,6 +42,23 @@ CommonExt.define( 'Common.log.Logger',
    * @property {Number}
    */
   displayLevel: 1,
+
+
+  /**
+   * Logs buffer
+   *
+   * @property {Array}
+   * @private
+   */
+  _buffer: [],
+
+
+  /**
+   * Max logs to store in the buffer
+   *
+   * @property {Number}
+   */
+  max_buffer: 750,
 
 
 
@@ -133,8 +150,6 @@ CommonExt.define( 'Common.log.Logger',
       // Workaround: if params is arguments this converts to a veritable Array type
       var params = Array.prototype.slice.apply( parameters );
 
-      this.fireEvent( this.get_level_name( level ), params );
-
       // Convert params to display in IE console
       if( CommonExt.isIE )
       {
@@ -155,9 +170,21 @@ CommonExt.define( 'Common.log.Logger',
 
       var args = [ this._getTime() + ' -' ].concat( params );
 
+      if( this._buffer.length >= this.max_buffer )
+      {
+        // This formula allows "max" to change (via debugger), where the more obvious "max/4" would not quite be the same
+        CommonExt.Array.erase( this._buffer, 0, this._buffer.length - 3 * Math.floor( this.max_buffer / 4 ) ); // Keep newest 75%
+      }
+
+      var buffer_log = [ this.get_level_name( level ), args ];
+      this._buffer.push( buffer_log );
+
+      this.fireEvent( 'beforelog', buffer_log );
+      this.fireEvent( this.get_level_name( level ), params );
+
       switch( level )
       {
-        case this.LEVEL_DEBUG: // console.debug not exists in IE
+        case this.LEVEL_DEBUG: // "console.debug" not exists in IE
           var method = ( document.all ) ? console.log : console.debug;
           break;
 
@@ -165,7 +192,7 @@ CommonExt.define( 'Common.log.Logger',
           var method = console.info;
           break;
 
-        case this.LEVEL_WARNING:
+        case this.LEVEL_WARN:
           var method = console.warn;
           break;
 
@@ -180,12 +207,13 @@ CommonExt.define( 'Common.log.Logger',
 
       if( document.all ) // IE
       {
-        var method = Function.prototype.call.bind( method, console );
-        method.apply( console, args );
+        // Workaround for IE: "console.xx.apply" is undefined
+        Function.prototype.apply.apply( method, [ console, args ] );
       }
       else
+      {
         method.apply( console, args );
-
+      }
     }
     catch( exc ) { /* Nothing to do */ }
   },
@@ -194,7 +222,6 @@ CommonExt.define( 'Common.log.Logger',
 
   /**
    * Debug log
-   *
    */
   debug: function()
   {
@@ -205,7 +232,6 @@ CommonExt.define( 'Common.log.Logger',
 
   /**
    * Info log
-   *
    */
   info: function()
   {
@@ -216,38 +242,31 @@ CommonExt.define( 'Common.log.Logger',
 
   /**
    * Warning log
-   *
-   * @param {String} message
-   * @param {Object} exc
    */
-  warning: function( message, exc )
+  warn: function()
   {
-    if( exc )
-    {
-      message += ': ' + this.excToString( exc );
-    }
+    this._log( this.LEVEL_WARN, arguments );
+  },
 
-    var args = [ message ].concat( Array.prototype.slice.apply( arguments ).splice( 1 ) );
-    this._log( this.LEVEL_WARNING, args );
+
+
+  /**
+   * Warning log
+   * For backward compatibility.
+   */
+  warning: function()
+  {
+    this._log( this.LEVEL_WARN, arguments );
   },
 
 
 
   /**
    * Error log
-   *
-   * @param {String} message
-   * @param {Object} exc
    */
-  error: function( message, exc )
+  error: function()
   {
-    if( exc )
-    {
-      message += ': ' + this.excToString( exc );
-    }
-
-    var args = [ message ].concat( Array.prototype.slice.apply( arguments ).splice( 1 ) );
-    this._log( this.LEVEL_ERROR, args );
+    this._log( this.LEVEL_ERROR, arguments );
   },
 
 
@@ -268,7 +287,7 @@ CommonExt.define( 'Common.log.Logger',
       case this.LEVEL_INFO:
         return 'info';
 
-      case this.LEVEL_WARNING:
+      case this.LEVEL_WARN:
         return 'warn';
 
       case this.LEVEL_ERROR:
@@ -277,6 +296,55 @@ CommonExt.define( 'Common.log.Logger',
       default:
         throw 'Level not found';
     }
+  },
+
+
+
+  /**
+   * Shows the log in a popup window
+   *
+   */
+  show_log: function()
+  {
+    // Check if the popup is already opened
+    if( this.popup && !this.popup.closed )
+    {
+      return;
+    }
+
+    this.popup = window.open( '', 'log', 'width=500, height=500, scrollbars=1, toolbar=1' );
+
+    this.popup.document.write(
+    [
+      '<html><body></body></html>'
+    ].join( '' ) );
+
+    CommonExt.Array.each( this._buffer, function( item ){ this._add_log_to_popup( item ); }, this );
+
+    // Set listener to append new logs
+    this.un( 'beforelog', this._add_log_to_popup, this );
+    this.on( 'beforelog', this._add_log_to_popup, this );
+  },
+
+
+
+  /**
+   * Adds a log to popup window
+   *
+   * @param {Array} data
+   * @private
+   */
+  _add_log_to_popup: function( data )
+  {
+    // Check if the popup is already opened
+    if( this.popup && this.popup.closed )
+    {
+      return;
+    }
+
+    var div = document.createElement( 'div' );
+    div.innerHTML = CommonExt.encode( data );
+    this.popup.document.body.appendChild( div );
   }
 
 });

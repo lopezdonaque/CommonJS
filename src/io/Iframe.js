@@ -265,7 +265,7 @@ CommonExt.define( 'Common.io.Iframe',
    */
   _handle_failure: function()
   {
-    Common.Log.warning( '[Common.io.Iframe._handle_failure] Failure', this );
+    Common.Log.warn( '[Common.io.Iframe._handle_failure] Failure', this );
     this._destroy();
     this.fireEvent( 'error', null );
   },
@@ -279,7 +279,7 @@ CommonExt.define( 'Common.io.Iframe',
    */
   _handle_timeout: function()
   {
-    Common.Log.warning( '[Common.io.Iframe._handle_timeout] Timeout failure', this );
+    Common.Log.warn( '[Common.io.Iframe._handle_timeout] Timeout failure', this );
     this._destroy();
     this.fireEvent( 'timeout', null );
   },

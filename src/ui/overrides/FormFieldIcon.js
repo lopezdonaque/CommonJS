@@ -55,7 +55,7 @@ CommonExt.define( 'Common.ui.overrides.FormFieldIcon',
   {
     if( this._is_applied )
     {
-      Common.Log.warning( '[Common.ui.overrides.FormFieldIcon.apply] Already applied' );
+      Common.Log.warn( '[Common.ui.overrides.FormFieldIcon.apply] Already applied' );
       return;
     }
 

@@ -4,23 +4,25 @@
  *
  * #Examples:
  *
- *     var checker = new Common.utils.ConnectionChecker(
+ *     Common.utils.ConnectionChecker.init(
  *     {
  *       method: 'img',
  *       url: Ext.BLANK_IMAGE_URL
  *     });
  *
- *     checker.on( 'online', function(){} );
- *     checker.on( 'offline', function(){} );
+ *     Common.utils.ConnectionChecker.on( 'online', function(){} );
+ *     Common.utils.ConnectionChecker.on( 'offline', function(){} );
  *
- *     checker.start_checker();
+ *     Common.utils.ConnectionChecker.start_checker();
  *
  */
 CommonExt.define( 'Common.utils.ConnectionChecker',
 {
+  singleton: true,
   extend: 'CommonExt.util.Observable',
 
-  config:
+
+  options:
   {
 
     /**
@@ -54,18 +56,18 @@ CommonExt.define( 'Common.utils.ConnectionChecker',
    * @private
    * @property {Boolean}
    */
-  _is_online: true,
+  is_online: true,
 
 
 
   /**
-   * Constructor
+   * Initializes the object
    *
-   * @param {Object} config
+   * @param {Object=} options
    */
-  constructor: function( config )
+  init: function( options )
   {
-    this.initConfig( config );
+    CommonExt.merge( this.options, options || {} );
 
     this.addEvents(
 
@@ -81,8 +83,6 @@ CommonExt.define( 'Common.utils.ConnectionChecker',
        */
       'offline'
     );
-
-    this.callParent( arguments );
   },
 
 
@@ -91,9 +91,17 @@ CommonExt.define( 'Common.utils.ConnectionChecker',
    * Starts connection checker
    *
    */
-  start_checker: function()
+  start: function()
   {
-    this._interval_id = setInterval( CommonExt.bind( this.check, this ), this.config.interval );
+    this._interval_id = setInterval( CommonExt.bind( this.check, this ), this.options.interval );
+
+    // Workaround:
+    // Chrome continues checking while page is reloading so we need to stop it.
+    // We also add a timeout to start it if beforeunload is cancelled by user
+    if( CommonExt.isChrome )
+    {
+      CommonExt.get( window ).on( 'beforeunload', this._beforeunload_stop, this );
+    }
   },
 
 
@@ -102,9 +110,14 @@ CommonExt.define( 'Common.utils.ConnectionChecker',
    * Stops connection checker
    *
    */
-  stop_checker: function()
+  stop: function()
   {
     clearInterval( this._interval_id );
+
+    if( CommonExt.isChrome )
+    {
+      CommonExt.get( window ).un( 'beforeunload', this._beforeunload_stop, this );
+    }
   },
 
 
@@ -115,7 +128,7 @@ CommonExt.define( 'Common.utils.ConnectionChecker',
    */
   check: function()
   {
-    if( this.config.check_method == 'img' )
+    if( this.options.check_method == 'img' )
     {
       this._check_connection_img();
     }
@@ -137,21 +150,21 @@ CommonExt.define( 'Common.utils.ConnectionChecker',
     try
     {
       var xmlReq = new XMLHttpRequest();
-      xmlReq.open( 'GET', this.config.url + '?' + ( new Date().getTime() ), false );
+      xmlReq.open( 'GET', this.options.url + '?' + ( new Date().getTime() ), false );
       xmlReq.send( null );
 
       if( xmlReq.status == 200 ) // Page was received, so we're online
       {
-        this.fire_status( 'online' );
+        this._fire_status( 'online' );
       }
       else
       {
-        this.fire_status( 'offline' );
+        this._fire_status( 'offline' );
       }
     }
     catch( exc )
     {
-      this.fire_status( 'offline' );
+      this._fire_status( 'offline' );
     }
   },
 
@@ -165,9 +178,9 @@ CommonExt.define( 'Common.utils.ConnectionChecker',
   _check_connection_img: function()
   {
     var img = new Image();
-    img.onload = CommonExt.bind( function(){ this.fire_status( 'online' ); }, this );
-    img.onerror = CommonExt.bind( function(){ this.fire_status( 'offline' ); }, this );
-    img.src = this.config.url + '?' + ( new Date().getTime() );
+    img.onload = CommonExt.bind( function(){ this._fire_status( 'online' ); }, this );
+    img.onerror = CommonExt.bind( function(){ this._fire_status( 'offline' ); }, this );
+    img.src = this.options.url + '?' + ( new Date().getTime() );
   },
 
 
@@ -176,20 +189,34 @@ CommonExt.define( 'Common.utils.ConnectionChecker',
    * Fires status
    *
    * @param {String} status
+   * @private
    */
-  fire_status: function( status )
+  _fire_status: function( status )
   {
-    if( status == 'online' && !this._is_online )
+    if( status == 'online' && !this.is_online )
     {
-      this._is_online = true;
+      this.is_online = true;
       this.fireEvent( 'online' );
     }
 
-    if( status == 'offline' && this._is_online )
+    if( status == 'offline' && this.is_online )
     {
-      this._is_online = false;
+      this.is_online = false;
       this.fireEvent( 'offline' );
     }
+  },
+
+
+
+  /**
+   * Stops checker on beforeunload event
+   *
+   * @private
+   */
+  _beforeunload_stop: function()
+  {
+    this.stop();
+    CommonExt.defer( this.start, 5000, this );
   }
 
 });

@@ -102,12 +102,16 @@ CommonExt.define( 'Common.io.Xdr',
     // Prepare xdr cache
     window.xdr_cache = window.xdr_cache || {};
 
-    var xdr = new XDomainRequest();
+    var xdr = new XDomainRequest(); // See this link to know about XDomainRequest restrictions: http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx
     xdr.open( 'POST', this.url );
     xdr.timeout = this.timeout;
     xdr.onload = CommonExt.bind( this._load, this );
     xdr.onerror = CommonExt.bind( this._error, this );
     xdr.ontimeout = CommonExt.bind( this._timeout, this );
+
+    // IE9 has a bug that requires the xdr.onprogress method to be set.
+    // http://social.msdn.microsoft.com/Forums/en-US/iewebdevelopment/thread/30ef3add-767c-4436-b8a9-f1ca19b4812e
+    xdr.onprogress = function(){};
 
     window.xdr_cache[ this._id ] = xdr;
 
@@ -164,7 +168,7 @@ CommonExt.define( 'Common.io.Xdr',
   _clean: function()
   {
     var xdr = window.xdr_cache[ this._id ];
-    xdr.onload = xdr.onerror = xdr.ontimeout = CommonExt.emptyFn;
+    xdr.onload = xdr.onerror = xdr.ontimeout = xdr.onprogress = CommonExt.emptyFn;
     xdr = undefined;
     delete window.xdr_cache[ this._id ];
   }

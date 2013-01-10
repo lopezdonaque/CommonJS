@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="default">
+
+  <property file="build.properties" />
+  <property file="${buildlibs}/common-targets/androme-common.properties" />
+  <property file="${buildlibs}/common-targets/androme-packages-dependencies.properties" />
+
+
+  <!-- **************************************************** -->
+  <!-- Define classpath -->
+  <!-- **************************************************** -->
+  <import file="${buildlibs}/common-targets/define_classpath.xml" />
+
+
+  <!-- **************************************************** -->
+  <!-- Sets property "svn.info.lastRev" to head svn revision -->
+  <!-- **************************************************** -->
+  <import file="${buildlibs}/common-targets/svn_update.xml" />
+  <import file="${buildlibs}/common-targets/find_revision.xml" />
+
+
+  <!-- **************************************************** -->
+  <!-- Clean -->
+  <!-- **************************************************** -->
+  <target name="clean">
+    <echo message="Cleanup deployment folder ${deployment.dir}" />
+    <delete dir="${deployment.dir}" />
+    <delete>
+      <fileset dir=".">
+        <include name="*.deb"/>
+      </fileset>
+    </delete>
+    <echo message="Cleaned" />
+  </target>
+
+
+  <!-- **************************************************** -->
+  <!-- Build project -->
+  <!-- **************************************************** -->
+  <target name="build_project" depends="clean, find_revision">
+
+    <java jar="${buildlibs}/JSBuilder-2.0.3/JSBuilder2.jar" fork="true" failonerror="true">
+
+      <!-- Location of a jsb2 project file (FULLPATH must be used) -->
+      <arg value="--projectFile" />
+      <arg value="${basedir}/project.jsb2" />
+
+      <!-- Home directory to build the project to -->
+      <arg value="--homeDir" />
+      <arg value="${basedir}" />
+
+      <!-- Use CSS minify -->
+      <arg value="--yui-compress-css" />
+
+      <!-- Output detailed information about what is being built -->
+      <!-- <arg value="-v" /> -->
+
+    </java>
+
+    <!-- Set version -->
+    <antcall target="set_version" />
+  </target>
+
+
+  <!-- **************************************************** -->
+  <!-- Set version on build files -->
+  <!-- **************************************************** -->
+  <target name="set_version">
+    <replace dir="${deployment.builds_dir}" token="{VERSION}" value="${version}" />
+    <replace file="${deployment.src_dir}/Common.js" token="{VERSION}" value="${version}" />
+  </target>
+
+
+  <!-- **************************************************** -->
+  <!-- Generate documentation -->
+  <!-- **************************************************** -->
+  <target name="jsdoc" depends="build_project">
+    <exec executable="${jsduck}">
+
+      <!-- Add namespaces for Ext to detect Ext in sandbox mode (Ext4) -->
+      <arg value="--ext-namespaces" />
+      <arg value="CommonExt" />
+
+      <!-- Documentation title -->
+      <arg value="--title" />
+      <arg value="${package.description} ${version}" />
+
+      <!-- Examples config file -->
+      <arg value="--examples" />
+      <arg value="examples/examples.json" />
+
+      <!-- Examples base URL -->
+      <arg value="--examples-base-url" />
+      <arg value="../examples/" />
+
+      <!-- Guides config file -->
+      <arg value="--guides" />
+      <arg value="guides/guides.json" />
+
+      <!-- Output folder -->
+      <arg value="--output" />
+      <arg value="${deployment.docs_dir}" />
+
+      <!-- Make JSDuck ignore some other type names (to avoid warnings) -->
+      <arg value="--external" />
+      <arg value="CommonExt.*,Ext.*" />
+
+      <!-- Source files paths -->
+      <!-- <arg value="${deployment.dir}/external" /> -->
+      <arg value="${deployment.src_dir}" />
+    </exec>
+  </target>
+
+
+  <!-- **************************************************** -->
+  <!-- Generate Debian package -->
+  <!-- **************************************************** -->
+  <target name="package" depends="build_project, jsdoc">
+
+    <!-- Deployment package -->
+    <deb package="${package.fullname_versioned}" todir="." section="libs" depends="${dependencies.androme-commom-html-framework}">
+      <version upstream="${version}" />
+      <maintainer name="${maintainer.name}" email="${maintainer.email}" />
+      <description synopsis="${package.description}">${package.description}</description>
+      <tarfileset dir="deployment" prefix="${package.install.dir}/${package.majorversion}">
+        <include name="**/**" />
+      </tarfileset>
+    </deb>
+
+    <!-- Devel package without dependencies -->
+    <deb package="${package.fullname_versioned_dev}" todir="." section="libs">
+      <version upstream="${version}" />
+      <maintainer name="${maintainer.name}" email="${maintainer.email}" />
+      <description synopsis="${package.description}">${package.description}</description>
+      <tarfileset dir="deployment" prefix="${package.install.dir}/${package.majorversion}">
+        <include name="**/**" />
+      </tarfileset>
+    </deb>
+  </target>
+
+
+  <!-- **************************************************** -->
+  <!-- Install Debian package -->
+  <!-- **************************************************** -->
+  <import file="${buildlibs}/common-targets/install_deb_versioned.xml" />
+  <import file="${buildlibs}/common-targets/install_deb_versioned_dev.xml" />
+
+
+  <!-- **************************************************** -->
+  <!-- Update Debian repository (Adds the current package to the Debian repository) -->
+  <!-- **************************************************** -->
+  <import file="${buildlibs}/common-targets/hostname.xml" />
+  <import file="${buildlibs}/common-targets/update_debian_repository_versioned.xml" />
+  <import file="${buildlibs}/common-targets/update_debian_repository_versioned_dev.xml" />
+  <import file="${buildlibs}/common-targets/update_integra_repository_versioned.xml" />
+
+
+  <!-- **************************************************** -->
+  <!-- Build targets -->
+  <!-- **************************************************** -->
+  <target name="default" depends="package,update_debian_repository_versioned,update_debian_repository_versioned_dev" />
+  <target name="devel" depends="package,install_deb_versioned_dev" />
+  <target name="prerelease" depends="package,update_integra_repository_versioned" />
+
+</project>

@@ -44,7 +44,7 @@ CommonExt.define( 'Common.utils.Date',
     {
       var ms = now.getTime() - date.getTime();
       var minutes = Common.utils.Timer.get_formatted_milliseconds( ms, '{M}' );
-      return Common.Langs.get( 'minutes_ago' ).replace( '%s', minutes );
+      return Common.Langs.get( 'minutes_ago' ).replace( '%s', parseInt( minutes ) );
     }
 
     // Less than one day (display hours)
@@ -52,7 +52,7 @@ CommonExt.define( 'Common.utils.Date',
     {
       var ms = now.getTime() - date.getTime();
       var hours = Common.utils.Timer.get_formatted_milliseconds( ms, '{H}' );
-      return Common.Langs.get( 'hours_ago' ).replace( '%s', hours );
+      return Common.Langs.get( 'hours_ago' ).replace( '%s', parseInt( hours ) );
     }
 
     // Current year (display date without year)
@@ -85,7 +85,7 @@ CommonExt.define( 'Common.utils.Date',
     {
       var ms = date.getTime() - now.getTime();
       var minutes = Common.utils.Timer.get_formatted_milliseconds( ms, '{M}' );
-      return Common.Langs.get( 'minutes_after' ).replace( '%s', minutes );
+      return Common.Langs.get( 'minutes_after' ).replace( '%s', parseInt( minutes ) );
     }
 
     // More than one day (display hours)
@@ -93,7 +93,7 @@ CommonExt.define( 'Common.utils.Date',
     {
       var ms = date.getTime() - now.getTime();
       var hours = Common.utils.Timer.get_formatted_milliseconds( ms, '{H}' );
-      return Common.Langs.get( 'hours_after' ).replace( '%s', hours );
+      return Common.Langs.get( 'hours_after' ).replace( '%s', parseInt( hours ) );
     }
 
     // Current year (display date without year)

@@ -31,7 +31,7 @@ CommonExt.define( 'Common.ui.overrides.FormFieldRequired',
   {
     if( this._is_applied )
     {
-      Common.Log.warning( '[Common.ui.overrides.FormFieldRequired.apply] Already applied' );
+      Common.Log.warn( '[Common.ui.overrides.FormFieldRequired.apply] Already applied' );
       return;
     }
 

@@ -5,61 +5,82 @@ Ext.ns( 'Common.ui.dashboard' );
 /**
  * Dashboard
  *
+ * Usage:
+ *     var dashboard = new Common.ui.dashboard.Dashboard(
+ *     {
+ *       top:
+ *       {
+ *         margins: '10',
+ *         items: new Ext.Toolbar()
+ *       },
+ *       bottom:
+ *       {
+ *         margins: '5',
+ *         items: new Ext.Toolbar()
+ *       },
+ *       center:
+ *       {
+ *         cls: 'foo',
+ *         margins: '5'
+ *       }
+ *     });
+ *
+ *     dashboard.start();
+ *
  */
 Common.ui.dashboard.Dashboard = Ext.extend( Ext.Viewport,
 {
   layout: 'border',
 
 
+  /**
+   * Applications container id
+   *
+   * @var {String}
+   */
+  apps_container_id: 'app_tabs',
+
+
 
   /**
    * Init component
    *
+   * @private
    */
   initComponent: function()
   {
     Common.ui.dashboard.Defaults.apply();
 
-    var top = new Ext.Panel(
+    var top = new Ext.Panel( CommonExt.merge(
     {
       hidden: true,
       autoHeight: true,
       region: 'north',
       margins: '10 10 5 10',
-      items: this.top_toolbar
-    });
+      items: []
+    }, this.top ) );
 
     //var center = new Ext.ux.SlidingTabPanel(
-    var center = new Ext.TabPanel(
+    var center = new Ext.TabPanel( CommonExt.merge(
     {
-      id: 'app_tabs',
+      id: this.apps_container_id,
       hidden: true,
       region: 'center',
       activeTab: 0,
       enableTabScroll: true,
-      cls: 'main_panel',
       margins: '0 10 0 10',
-      items: [],
-      listeners:
-      {
-        scope: this,
-        afterrender: function( cmp )
-        {
-          // Add css class to the header to allow customize it
-          cmp.el.down( '.x-tab-panel-header' ).addClass( 'main_panel-header' );
-        }
-      }
+      items: []
       //,slideDuration: .15,
-    });
+    }, this.center ) );
 
-    var bottom = new Ext.Panel(
+    var bottom = new Ext.Panel( CommonExt.merge(
     {
       hidden: true,
       autoHeight: true,
       region: 'south',
       margins: '5 10 10 10',
       items: this.bottom_toolbar
-    });
+    }, this.bottom ) );
 
     this.items = [ top, center, bottom ];
 
@@ -70,7 +91,6 @@ Common.ui.dashboard.Dashboard = Ext.extend( Ext.Viewport,
 
   /**
    * Starts the dashboard
-   *
    */
   start: function()
   {
