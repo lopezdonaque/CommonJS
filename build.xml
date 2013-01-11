@@ -2,8 +2,8 @@
 <project default="default">
 
   <property file="build.properties" />
-  <property file="${buildlibs}/common-targets/androme-common.properties" />
-  <property file="${buildlibs}/common-targets/androme-packages-dependencies.properties" />
+  <property file="${buildlibs}/common-targets/common.properties" />
+  <property file="${buildlibs}/common-targets/packages-dependencies.properties" />
 
 
   <!-- **************************************************** -->
@@ -118,7 +118,7 @@
   <target name="package" depends="build_project, jsdoc">
 
     <!-- Deployment package -->
-    <deb package="${package.fullname_versioned}" todir="." section="libs" depends="${dependencies.androme-commom-html-framework}">
+    <deb package="${package.fullname_versioned}" todir="." section="libs" depends="${dependencies.commom-html-framework}">
       <version upstream="${version}" />
       <maintainer name="${maintainer.name}" email="${maintainer.email}" />
       <description synopsis="${package.description}">${package.description}</description>
