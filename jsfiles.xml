@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+  <filelist id="jsfiles.core" dir="src" files="
+    Common.js
+    Langs.js
+    log/Logger.js
+    utils/Bandwidth.js
+    utils/ConnectionChecker.js
+    utils/Xml.js
+    utils/Screenshot.js
+    utils/Timer.js
+    utils/Session.js
+    utils/Date.js
+    utils/Array.js
+    utils/Url.js
+    utils/Debug.js
+    utils/Format.js
+    utils/Gravatar.js
+    utils/FullScreen.js
+    utils/Page.js
+    utils/Html.js
+    utils/UserMediaChecker.js
+    capabilities/Browser.js
+    capabilities/BrowserPlugins.js
+    crypt/Base64.js
+    crypt/Md5.js
+    crypt/Des.js
+    tasks/Task.js
+    tasks/TaskManager.js
+    io/Iframe.js
+    io/Xdr.js
+    rpc/JsonRpc.js
+    api/Api.js
+    api/Proxy.js
+    api/Store.js
+    api/Rpc.js
+    api/RpcEvents.js" />
+
+  <filelist id="jsfiles.ui" dir="src" files="
+    upload/Uploader.js
+    ui/overrides/FormFieldRequired.js
+    ui/overrides/FieldFocus.js
+    ui/overrides/VTypes.js
+    ui/plugins/field/HelpText.js
+    ui/plugins/toggler/Dispatcher.js
+    ui/plugins/toggler/Observer.js
+    ui/plugins/field/SideIcon.js
+    ui/plugins/panel/HeaderActions.js
+    ui/plugins/grid/RowActions.js
+    ui/plugins/component/DomClick.js
+    ui/plugins/component/Submenu.js
+    ui/IconMgr.js
+    ui/Grid.js
+    ui/Notificator.js
+    ui/Info.js
+    ui/Toggler.js
+    ui/dashboard/Dashboard.js
+    ui/dashboard/Navigation.js
+    ui/dashboard/AppWindow.js
+    ui/dashboard/Defaults.js
+    ui/tabgroup/TabGroupPanel.js
+    ui/tabgroup/TabGroupButton.js
+    ui/login/LoginPanel.js
+    ui/loading/LoadingLayer.js
+    ui/upload/GlobalProgressBar.js
+    ui/upload/PluploadPanel.js
+    ui/upload/SingleUploadField.js
+    ui/upload/DropZone.js
+    ui/upload/BrowseButton.js
+    ui/upload/StartUploadButton.js
+    ui/upload/StopUploadButton.js
+    ui/upload/FilesQueuePanel.js" />
+
+</project>

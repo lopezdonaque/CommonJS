@@ -29,11 +29,14 @@ CommonExt.define( 'Common.log.Logger',
   /** Info Level constant @property {Number} */
   LEVEL_INFO: 2,
 
+  /** Notice Level constant @property {Number} */
+  LEVEL_NOTICE: 3,
+
   /** Warning Level constant @property {Number} */
-  LEVEL_WARN: 3,
+  LEVEL_WARN: 4,
 
   /** Error Level constant @property {Number} */
-  LEVEL_ERROR: 4,
+  LEVEL_ERROR: 5,
 
 
   /**
@@ -63,41 +66,10 @@ CommonExt.define( 'Common.log.Logger',
 
 
   /**
-   * Converts all types of exceptions into an string
-   *
-   * @param {Object} exc
-   */
-  excToString: function( exc )
-  {
-    try
-    {
-      var str = '';
-
-      if( typeof exc == 'string' )
-      {
-        str = '\nException caught: ' + exc;
-      }
-      else
-      {
-        str = '\nException caught: \ndescription: ' + exc.description + '\nname: ' + exc.name + '\nmessage: ' + exc.message + "\nnumber: " + exc.number;
-      }
-
-      str += '\nStack: ' + this.getTrace();
-      return str;
-    }
-    catch( exc )
-    {
-      return '\nException caught: \ndescription: ' + exc.description + '\nname: ' + exc.name + '\nmessage: ' + exc.message + "\nnumber: " + exc.number;
-    }
-  },
-
-
-
-  /**
    * Returns time as string
    *
-   * @private
    * @return {String}
+   * @private
    */
   _getTime: function()
   {
@@ -107,35 +79,11 @@ CommonExt.define( 'Common.log.Logger',
 
 
   /**
-   * Gets the stack trace of this call.
-   *
-   * @return {String}
-   */
-  getTrace: function()
-  {
-    return '';
-
-    //get stack trace
-    /*try
-    {
-      var trace = console.trace();
-    }
-    catch( exc )
-    {
-      var trace = 'Unknown trace';
-    }
-
-    return trace.toString();*/
-  },
-
-
-
-  /**
    * Logs a message
    *
-   * @private
    * @param {Number} level
    * @param {Array} parameters
+   * @private
    */
   _log: function( level, parameters )
   {
@@ -182,26 +130,32 @@ CommonExt.define( 'Common.log.Logger',
       this.fireEvent( 'beforelog', buffer_log );
       this.fireEvent( this.get_level_name( level ), params );
 
+      var method;
+
       switch( level )
       {
         case this.LEVEL_DEBUG: // "console.debug" not exists in IE
-          var method = ( document.all ) ? console.log : console.debug;
+          method = ( document.all ) ? console.log : console.debug;
           break;
 
         case this.LEVEL_INFO:
-          var method = console.info;
+          method = console.info;
+          break;
+
+        case this.LEVEL_NOTICE:
+          method = console.info;
           break;
 
         case this.LEVEL_WARN:
-          var method = console.warn;
+          method = console.warn;
           break;
 
         case this.LEVEL_ERROR:
-          var method = console.error;
+          method = console.error;
           break;
 
         default:
-          var method = console.log;
+          method = console.log;
           break;
       }
 
@@ -236,6 +190,16 @@ CommonExt.define( 'Common.log.Logger',
   info: function()
   {
     this._log( this.LEVEL_INFO, arguments );
+  },
+
+
+
+  /**
+   * Notice log
+   */
+  notice: function()
+  {
+    this._log( this.LEVEL_NOTICE, arguments );
   },
 
 
@@ -286,6 +250,9 @@ CommonExt.define( 'Common.log.Logger',
 
       case this.LEVEL_INFO:
         return 'info';
+
+      case this.LEVEL_NOTICE:
+        return 'notice';
 
       case this.LEVEL_WARN:
         return 'warn';

@@ -69,7 +69,7 @@ CommonExt.define( 'Common.io.Iframe',
 
 
   /**
-   * Creates a new task object
+   * Creates a new instance
    *
    * @param {Object} config
    */
@@ -191,10 +191,10 @@ CommonExt.define( 'Common.io.Iframe',
   /**
    * Adds input hidden to form
    *
-   * @private
    * @param {Object} form
    * @param {String} name
    * @param {String} value
+   * @private
    */
   _add_hidden: function( form, name, value )
   {
@@ -213,9 +213,9 @@ CommonExt.define( 'Common.io.Iframe',
   /**
    * On iframe load handler
    *
-   * @private
    * @param {Object} event
    * @param {Object} iframe
+   * @private
    */
   _on_iframe_load: function( event, iframe )
   {
@@ -265,7 +265,7 @@ CommonExt.define( 'Common.io.Iframe',
    */
   _handle_failure: function()
   {
-    Common.Log.warn( '[Common.io.Iframe._handle_failure] Failure', this );
+    Common.Log.warn( '[Common.io.Iframe._handle_failure] Failure', this.data );
     this._destroy();
     this.fireEvent( 'error', null );
   },
@@ -279,7 +279,7 @@ CommonExt.define( 'Common.io.Iframe',
    */
   _handle_timeout: function()
   {
-    Common.Log.warn( '[Common.io.Iframe._handle_timeout] Timeout failure', this );
+    Common.Log.warn( '[Common.io.Iframe._handle_timeout] Timeout failure', this.data );
     this._destroy();
     this.fireEvent( 'timeout', null );
   },

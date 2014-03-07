@@ -3,8 +3,10 @@
  * Proxy class to use in ExtJS objects like grids, combos, etc.
  *
  */
-Common.api.Proxy = Ext.extend( Ext.data.ScriptTagProxy,
+Ext.define( 'Common.api.Proxy',
 {
+  extend: 'Ext.data.ScriptTagProxy',
+
 
   /**
    * The number of milliseconds to wait for a response.
@@ -32,7 +34,7 @@ Common.api.Proxy = Ext.extend( Ext.data.ScriptTagProxy,
    */
   constructor: function( entity, method, args )
   {
-    Common.api.Proxy.superclass.constructor.call( this, arguments );
+    this.callParent( arguments );
 
     this._entity = entity;
     this._method = method;

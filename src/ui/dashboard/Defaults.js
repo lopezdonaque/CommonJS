@@ -2,6 +2,8 @@
 /**
  * Dashboard default configuration
  *
+ * Modifies some default properties of ExtJS components.
+ *
  * Usage:
  *     Common.ui.dashboard.Defaults.apply();
  *
@@ -23,17 +25,13 @@ Common.ui.dashboard.Defaults =
       defaults: { msgTarget: 'side' },
       monitorValid: true,
       buttonAlign: 'center',
-      border: false,
-      autoHeight: true, // Use autoHeight to dont show a scroll between controls and form buttons
-      autoScroll: false // If you need autoScroll, use it in the parent Panel
+      border: false
     });
 
     Ext.apply( Ext.Panel.prototype,
     {
       buttonAlign: 'center',
       forceLayout: true,
-      autoScroll: true,
-
       defaults: { msgTarget: 'side' },
 
       // Applied on layout form
@@ -50,8 +48,6 @@ Common.ui.dashboard.Defaults =
       enableColumnMove: false,
       enableColumnResize: true,
       enableHdMenu: false,
-
-      autoHeight: false, // Use autoHeight false because Grids are usually used in Panels with layout 'fit'
       border: false
     });
 
@@ -69,7 +65,6 @@ Common.ui.dashboard.Defaults =
       activeTab: 0
     });
 
-
     /*// WORKAROUND: fix bug on IE - When two modals are opened and try to close one, "Invalid argument" error is raised
     if( Ext.isIE )
     {
@@ -79,15 +74,11 @@ Common.ui.dashboard.Defaults =
       Ext.menu.Menu.prototype.shadow = false;
     }*/
 
-
-
     var cookie_provider = new Ext.state.CookieProvider(
     {
       expires: new Date( new Date().getTime() + ( 1000 * 60 * 60 * 24 * 30 ) ) //30 days from now
     });
     Ext.state.Manager.setProvider( cookie_provider );
-
-
 
     // Disable Esc key
     new Ext.KeyMap( document,
@@ -100,8 +91,6 @@ Common.ui.dashboard.Defaults =
       }
     });
 
-
-
     Ext.apply( Ext.grid.GridView.prototype,
     {
       emptyText: '<p style="line-height: 35px; padding-left: 10px;">' + Common.Langs.get( 'no_records_found' ) + '</p>'
@@ -112,10 +101,7 @@ Common.ui.dashboard.Defaults =
       emptyText: '<p style="line-height: 35px; padding-left: 10px;">' + Common.Langs.get( 'no_records_found' ) + '</p>'
     });
 
-
     Common.ui.overrides.FormFieldRequired.apply();
-    Common.ui.overrides.FormFieldIcon.apply();
-    Common.ui.overrides.HelpText.apply();
     Common.ui.overrides.FieldFocus.apply();
     Common.ui.overrides.VTypes.apply();
   }

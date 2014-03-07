@@ -2,46 +2,51 @@
 /**
  * Notificator
  *
- * Allowed options for "show" method:
+ * This notificator only allows one notification displayed.
+ * Next notifications could be queued or discarted.
  *
- * - text: Text of the message
- * - discard: Wether if the notification is discartable or not. If discard = true, it won't be shown if another notification is displayed.
- * - sticky: Defines if the notification will be displayed permanently
- * - hide_delay: Time in milliseconds the notification will be on screen. If it's not set or set to 0, hide_delay depends on number of words.
- * - close_button: Defines if the close button will be displayed
+ * #Examples
  *
- * Icon as css class:
- * - iconCls: CSS class with the background-image
- *
- * Icon as URL:
- *
- * icon:
- * {
- *   src: Image URL to display as notification icon
- *   width: Width of the icon
- *   height: Height of the icon
- * }
- *
- *
- * #Examples:
- *
+ * Create notificator instance:
  *     var notificator = new Common.ui.Notificator(
  *     {
  *       close_text: 'Close'
  *     });
  *
+ * Using shortcut methods:
  *     notificator.show_error( 'This is an error message' );
  *     notificator.show_success( 'This is a success message' );
  *     notificator.show_warning( 'This is a warning message' );
+ *     notificator.show_info( 'This is an info message' );
  *
- *     notificator.show_by_type( 'This is an info message', 'info' );
- *     notificator.show_by_type( 'This is an info message', 'appointment' );
+ * Using custom types:
+ *     notificator.show_by_type( 'This is a loading message', 'loading' );
+ *     notificator.show_by_type( 'This is an appointment message', 'appointment' );
  *
+ * Using show method:
+ *     notificator.show(
+ *     {
+ *       text: 'Custom text',
+ *       discard: false,
+ *       sticky: false,
+ *       hide_delay: 2000,
+ *       close_button: false,
+ *       icon:
+ *       {
+ *         src: 'http://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Google_Chrome_icon_(2011).svg/64px-Google_Chrome_icon_(2011).svg.png',
+ *         width: '40px',
+ *         height: '40px'
+ *       }
+ *     });
+ *
+ * Hide notificator:
  *     notificator.hide();
  *
  */
-Common.ui.Notificator = Ext.extend( Ext.Container,
+Ext.define( 'Common.ui.Notificator',
 {
+  extend: 'Ext.Container',
+
 
   /**
    * Default css class
@@ -54,8 +59,8 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
   /**
    * Defines if it's showing notificator
    *
-   * @private
    * @property {Boolean}
+   * @private
    */
   _showing_notificator: false,
 
@@ -63,8 +68,8 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
   /**
    * Timeout id to hide notificator when hide_delay is used
    *
-   * @private
    * @property {Number}
+   * @private
    */
   _hide_timeout_id: null,
 
@@ -72,8 +77,8 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
   /**
    * Minimum delay time (milliseconds)
    *
-   * @private
    * @property {Number}
+   * @private
    */
   _minimum_delay: 3000,
 
@@ -98,6 +103,7 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
   /**
    * Init component
    *
+   * @private
    */
   initComponent: function()
   {
@@ -105,7 +111,7 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
     this.renderTo = Ext.getBody();
     this.cls += ' ' + this.extraCls;
     this.html = this._get_notificator_html();
-    Common.ui.Notificator.superclass.initComponent.apply( this, arguments );
+    this.callParent( arguments );
   },
 
 
@@ -114,6 +120,16 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
    * Prepares and shows notificator
    *
    * @param {Object} options
+   * @param {String} options.text Text of the message
+   * @param {Boolean} options.discard Wether if the notification is discartable or not. If discard = true, it won't be shown if another notification is displayed.
+   * @param {Boolean} options.sticky Defines if the notification will be displayed permanently
+   * @param {Number} options.hide_delay Time in milliseconds the notification will be on screen. If it's not set or set to 0, hide_delay depends on number of words.
+   * @param {Boolean} options.close_button: Defines if the close button will be displayed
+   * @param {String} options.iconCls CSS class with the background-image
+   * @param {Object} options.icon Specific icon image properties
+   * @param {String} options.icon.src Image URL to display as notification icon
+   * @param {String} options.icon.width Units are required. For example: '16px'.
+   * @param {String} options.icon.height
    */
   show: function( options )
   {
@@ -145,14 +161,14 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
   /**
    * Prepares the notificator html
    *
-   * @private
    * @param {Object} options
+   * @private
    */
   _prepare: function( options )
   {
     if( !options.text )
     {
-      return false;
+      return;
     }
 
     // Clean icon container
@@ -188,9 +204,9 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
   /**
    * Returns the time (seconds) that user needs to read the text depending on the number of words
    *
-   * @private
    * @param {String} text
    * @return {Number}
+   * @private
    */
   _get_delay_by_text: function( text )
   {
@@ -210,7 +226,6 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
 
   /**
    * Hides notificator
-   *
    */
   hide: function()
   {
@@ -288,10 +303,23 @@ Common.ui.Notificator = Ext.extend( Ext.Container,
 
 
   /**
+   * Shows info message
+   *
+   * @param {String} text
+   * @param {Object} options (Optional)
+   */
+  show_info: function( text, options )
+  {
+    this.show_by_type( text, 'info', options );
+  },
+
+
+
+  /**
    * Returns the notificator html
    *
-   * @private
    * @return {String}
+   * @private
    */
   _get_notificator_html: function()
   {

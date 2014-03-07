@@ -20,6 +20,24 @@ CommonExt.define( 'Common.utils.Array',
     var collection = new CommonExt.util.MixedCollection();
     collection.addAll( array );
     return collection.findBy( fn, scope );
+  },
+
+
+
+  /**
+   * Returns a new array where the given property matches the given value
+   *
+   * @param {Array} array
+   * @param {String} property
+   * @param {*} value
+   * @returns {*}
+   */
+  filterByProperty: function( array, property, value )
+  {
+    return CommonExt.Array.filter( array, function( item )
+    {
+      return ( item[ property ] == value );
+    });
   }
 
 });

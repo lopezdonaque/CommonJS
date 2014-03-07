@@ -3,8 +3,9 @@
  * Displays an info
  *
  */
-Common.ui.Info = Ext.extend( Ext.Container,
+Ext.define( 'Common.ui.Info',
 {
+  extend: 'Ext.Container',
   autoEl: 'div',
   title: '',
   text: '',
@@ -14,6 +15,7 @@ Common.ui.Info = Ext.extend( Ext.Container,
   /**
    * Init component
    *
+   * @private
    */
   initComponent: function()
   {
@@ -36,8 +38,7 @@ Common.ui.Info = Ext.extend( Ext.Container,
     html += '</table>';
 
     this.html = html;
-
-    Common.ui.Info.superclass.initComponent.apply( this, arguments );
+    this.callParent( arguments );
   }
 
 });

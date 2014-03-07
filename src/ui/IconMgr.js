@@ -131,7 +131,7 @@ CommonExt.define( 'Common.ui.IconMgr',
   _generateIconCSSRule: function( baseName, icon )
   {
     // Generate icon css rule name
-    var cls = this.PREFIX + baseName + '_' + new Date().getTime();
+    var cls = this.PREFIX + baseName + '_' + CommonExt.id();
 
     // Get icon image path
     var iconImgPath = this._iconsBases[ baseName ].path + '/' + icon;

@@ -93,8 +93,9 @@
  *     };
  *
  */
-Common.api.Store = Ext.extend( Ext.data.Store,
+Ext.define( 'Common.api.Store',
 {
+  extend: 'Ext.data.Store',
   autoLoad: false,
   remoteSort: true,
 
@@ -172,7 +173,7 @@ Common.api.Store = Ext.extend( Ext.data.Store,
       totalProperty: 'total_rows'
     }, config.reader_config.record );
 
-    Common.api.Store.superclass.constructor.call( this, arguments );
+    this.callParent( arguments );
 
     if( config.sortInfo )
     {

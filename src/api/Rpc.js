@@ -217,7 +217,7 @@ CommonExt.define( 'Common.api.Rpc',
     Common.Log.debug( '[Common.api.Rpc._request_with_xhr] Request with xhr: ', this.entity, this.method );
 
     var data = this._get_request_data();
-    this.fireEvent( 'beforerequest', { data: data } );
+    this.fireEvent( 'beforerequest', { data: data }, this );
 
     // Use ExtJS4 because ExtJS3 with prototype adapter could not detect 404, 500, etc. errors
     CommonExt.Ajax.request(
@@ -226,17 +226,20 @@ CommonExt.define( 'Common.api.Rpc',
       method: 'post',
       timeout: this.timeout,
       params: data,
-      success: CommonExt.bind( function( resp ){ this._check_response( resp.responseText ); }, this ),
-      failure: CommonExt.bind( function( resp )
+      scope: this,
+      success: this._check_response,
+      failure: function( resp )
       {
         // Check if it's user aborted (the user hit Esc or navigated away from the current page before an AJAX call was done)
+        // or the OPTIONS response failed on a cross-domain request (due to loss of Internet connection)
         if( resp.getAllResponseHeaders && ( !resp.getAllResponseHeaders() || CommonExt.Object.getSize( resp.getAllResponseHeaders() ) == 0 ) )
         {
+          Common.Log.warn( '[Common.api.Rpc._request_with_xhr] Ajax request aborted or OPTIONS failed', this._get_builded_url() );
           return;
         }
 
         this._handle_failure();
-      }, this )
+      }
     });
   },
 
@@ -252,7 +255,7 @@ CommonExt.define( 'Common.api.Rpc',
     Common.Log.debug( '[Common.api.Rpc._request_with_xdr] Request with xdr: ', this.entity, this.method );
 
     var data = this._get_request_data();
-    this.fireEvent( 'beforerequest', { data: data } );
+    this.fireEvent( 'beforerequest', { data: data }, this );
 
     new Common.io.Xdr(
     {
@@ -280,7 +283,7 @@ CommonExt.define( 'Common.api.Rpc',
     Common.Log.debug( '[Common.api.Rpc._request_with_iframe] Request with iframe: ', this.entity, this.method );
 
     var data = this._get_request_data();
-    this.fireEvent( 'beforerequest', { data: data } );
+    this.fireEvent( 'beforerequest', { data: data }, this );
 
     new Common.io.Iframe(
     {
@@ -307,16 +310,26 @@ CommonExt.define( 'Common.api.Rpc',
   {
     this._id = ++Common.api.Rpc.ID;
 
+    var args = [];
+
+    try
+    {
+      // Workaround: We must to do a double encode to be sure all "undefined" are converted to "null"
+      // See: http://www.sencha.com/forum/showthread.php?134699-Ext.encode()-error
+      args = CommonExt.encode( CommonExt.decode( CommonExt.encode( this.args || [] ) ) );
+    }
+    catch( e )
+    {
+      Common.Log.error( '[Common.api.Rpc._get_request_data] Exception encoding rpc arguments [' + this.entity + '] [' + this.method + ']', e );
+    }
+
     return {
       transaction_id: this._id,
       format: this.format,
       token: this.token,
       entity: this.entity,
       method: this.method,
-
-      // Workaround: We must to do a double encode to be sure all "undefined" are converted to "null"
-      // See: http://www.sencha.com/forum/showthread.php?134699-Ext.encode()-error
-      arguments: CommonExt.encode( CommonExt.decode( CommonExt.encode( this.args || [] ) ) )
+      arguments: args
     };
   },
 
@@ -325,8 +338,8 @@ CommonExt.define( 'Common.api.Rpc',
   /**
    * Builds and returns URL
    *
-   * @private
    * @return {String}
+   * @private
    */
   _get_builded_url: function()
   {
@@ -355,31 +368,39 @@ CommonExt.define( 'Common.api.Rpc',
   /**
    * Checks response
    *
+   * @param {String|Object} resp
    * @private
-   * @param {String} resp
    */
   _check_response: function( resp )
   {
+    var headers = CommonExt.isString( resp ) ? {} : resp.getAllResponseHeaders();
+    var responseText = CommonExt.isString( resp ) ? resp : resp.responseText;
+
     // Check if the response is a valid json string
+    var response;
     try
     {
-      var response = CommonExt.decode( resp );
+      response = CommonExt.decode( responseText );
     }
     catch( e )
     {
-      var response = { error: true };
+      response = { error: true };
     }
 
     if( response && response.error === true )
     {
-      this.fireEvent( Common.api.RpcEvents.ERROR, response, this );
-      Common.api.RpcEvents.fireEvent( Common.api.RpcEvents.ERROR, response, this );
+      if( this.fireEvent( Common.api.RpcEvents.ERROR, response, this ) !== false )
+      {
+        Common.api.RpcEvents.fireEvent( Common.api.RpcEvents.ERROR, response, this );
+      }
     }
     else
     {
       Common.Log.debug( '[Common.api.Rpc._check_response] Success', response );
-      this.fireEvent( Common.api.RpcEvents.SUCCESS, response, this );
-      Common.api.RpcEvents.fireEvent( Common.api.RpcEvents.SUCCESS, response, this );
+      if( this.fireEvent( Common.api.RpcEvents.SUCCESS, response, headers, this ) !== false )
+      {
+        Common.api.RpcEvents.fireEvent( Common.api.RpcEvents.SUCCESS, response, headers, this );
+      }
     }
   },
 
@@ -401,12 +422,15 @@ CommonExt.define( 'Common.api.Rpc',
    */
   _handle_failure: function()
   {
-    Common.Log.warn( '[Common.api.Rpc._handle_failure] Timeout failure', this );
+    Common.Log.warn( '[Common.api.Rpc._handle_failure] Timeout failure [' + this.entity + '] [' + this.method + ']' );
 
     this._destroy_trans();
     this.trans = false;
-    this.fireEvent( Common.api.RpcEvents.ERROR, null );
-    Common.api.RpcEvents.fireEvent( Common.api.RpcEvents.ERROR, {} );
+
+    if( this.fireEvent( Common.api.RpcEvents.ERROR, null, this ) !== false )
+    {
+      Common.api.RpcEvents.fireEvent( Common.api.RpcEvents.ERROR, null, this );
+    }
   },
 
 

@@ -39,6 +39,51 @@
         "icon": "shared/screens/blank.gif",
         "desc": "Loading layer examples",
         "status": ""
+      },
+
+      {
+        "text": "Tab Group",
+        "url": "tabgroup/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "Tab Group examples",
+        "status": ""
+      },
+
+      {
+        "text": "Grid",
+        "url": "grid/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "Grid examples",
+        "status": ""
+      }
+    ]
+  },
+
+
+  {
+    "title": "UI Plugins",
+    "items":
+    [
+      {
+        "text": "Help text",
+        "url": "plugins/helptext/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "",
+        "status": ""
+      },
+      {
+        "text": "Toggler",
+        "url": "plugins/toggler/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "",
+        "status": ""
+      },
+      {
+        "text": "Side Icon",
+        "url": "plugins/sideicon/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "",
+        "status": ""
       }
     ]
   }

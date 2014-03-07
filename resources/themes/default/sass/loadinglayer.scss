@@ -1,0 +1,24 @@
+
+.common-loadinglayer
+{
+  z-index: 9999;
+  width: auto;
+  background: InfoBackground url( '#{$images-path}/loading/loading.gif' ) no-repeat 5px 9px;
+  font-family: verdana,serif;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 10px 8px 10px 30px;
+  color: #777777;
+  border: 1px solid #cccccc;
+  white-space: nowrap;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.common-loadinglayer-left-bottom
+{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}

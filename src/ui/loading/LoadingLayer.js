@@ -52,14 +52,13 @@ CommonExt.define( 'Common.ui.loading.LoadingLayer',
 
   /**
    * Hides the loading layer
-   *
    */
   hide: function()
   {
     // Verify if the loading layer exists
     if( !this._loading_layer )
     {
-      return false;
+      return;
     }
 
     // Fade it

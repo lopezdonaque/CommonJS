@@ -11,7 +11,7 @@ Common =
    *
    * @property {String}
    */
-  version: '{VERSION}',
+  version: '${package.version}',
 
 
   /**

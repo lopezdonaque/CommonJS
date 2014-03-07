@@ -1,0 +1,89 @@
+
+.common-tabgroup-tabgrouppanel
+{
+
+}
+
+.common-tabgroup-tabgroupbutton
+{
+  float: left;
+  margin-right: 8px;
+  padding-right: 9px;
+
+  background-image: url( #{$images-path}/tabgroup/grid-blue-split.gif );
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.common-tabgroup-tabgroupbutton:last-child
+{
+  margin-right: 0;
+  padding-right: 0;
+  background: none;
+}
+
+.common-tabgroup-tabgroupbutton-text-wrapper
+{
+  float: left;
+}
+
+.x-tab-strip-active .common-tabgroup-tabgroupbutton-active .common-tabgroup-tabgroupbutton-text
+{
+  font-weight: bold;
+  cursor: default;
+}
+
+.common-tabgroup-tabgroupbutton-icon
+{
+  float: left;
+  position: relative;
+  top: 3px;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+}
+
+.common-tabgroup-tabgroupbutton-text
+{
+  float: left;
+  font: normal 11px tahoma,arial,helvetica;
+  color: #416aa3;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.common-tabgroup-tabgroupbutton-close
+{
+  display: none; /* Hide by default (Will be displayed with closable class) */
+  float: left;
+  position: relative;
+  top: 5px;
+  margin-left: 3px;
+  width: 7px;
+  height: 7px;
+  background: url( #{$images-path}/tabgroup/close.png ) no-repeat;
+  background-size: 7px;
+  cursor: pointer;
+}
+
+.common-tabgroup-tabgroupbutton-closable .common-tabgroup-tabgroupbutton-close
+{
+  display: block;
+}
+
+.x-tab-strip-top .x-tab-strip-active .x-tab-right .common-tabgroup-tabgroupbutton-text
+{
+  padding-bottom: 5px;
+}
+
+.common-tabgroup-tab .x-tab-strip-text
+{
+  float: left;
+  margin-right: 5px;
+  font-weight: normal !important;
+}
+
+.x-tab-with-icon .common-tabgroup-tab .x-tab-strip-text
+{
+  height: 13px;
+}

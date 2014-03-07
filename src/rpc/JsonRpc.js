@@ -160,7 +160,7 @@ CommonExt.define( 'Common.rpc.JsonRpc',
    */
   _request_with_xdr: function()
   {
-    Common.Log.debug( '[Common.rpc.JsonRpc._request_with_xdr] Request with xdr', this );
+    Common.Log.debug( '[Common.rpc.JsonRpc._request_with_xdr] Request with xdr', this.method, this.params );
 
     new Common.io.Xdr(
     {
@@ -185,7 +185,7 @@ CommonExt.define( 'Common.rpc.JsonRpc',
    */
   _request_with_xhr: function()
   {
-    Common.Log.debug( '[Common.rpc.JsonRpc._request_with_xhr] Request with xhr', this );
+    Common.Log.debug( '[Common.rpc.JsonRpc._request_with_xhr] Request with xhr', this.method, this.params );
 
     CommonExt.Ajax.request(
     {

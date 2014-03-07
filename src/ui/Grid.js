@@ -1,7 +1,4 @@
 
-Ext.ns( 'Common.ui' );
-
-
 /**
  * Base class to create grids
  *
@@ -23,8 +20,9 @@ Ext.ns( 'Common.ui' );
  *     ];
  *
  */
-Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
+Ext.define( 'Common.ui.Grid',
 {
+  extend: 'Ext.grid.GridPanel',
   stateful: false,
 
 
@@ -45,7 +43,7 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
 
 
   /**
-   * Row context menu
+   * Submenu to show on row contextmenu event
    *
    * @property {Ext.menu.Menu}
    */
@@ -125,6 +123,14 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
 
 
   /**
+   * Event to start loading if auto_load is true
+   *
+   * @property {String}
+   */
+  auto_load_event: 'afterrender',
+
+
+  /**
    * Action button configuration options
    *
    * @property {Object}
@@ -134,7 +140,7 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
     text: '',
     tooltip: '',
     cls: 'x-btn-without-bg',
-    iconCls: 'fugue fugue-gear--arrow'
+    iconCls: 'common-grid-action-menu-icon'
   },
 
 
@@ -146,13 +152,26 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
    */
   initComponent: function()
   {
+    // Add submenu plugin
+    if( CommonExt.isArray( this.plugins ) )
+    {
+      this.plugins.push( new Common.ui.plugins.component.Submenu() );
+    }
+    else if( this.plugins )
+    {
+      this.plugins = [ this.plugins, new Common.ui.plugins.component.Submenu() ];
+    }
+    else
+    {
+      this.plugins = [ new Common.ui.plugins.component.Submenu() ];
+    }
+
     // Events
-    this.on( 'beforedestroy', this._on_beforedestroy_grid );
     this.on( 'afterrender', this._on_afterrender_grid );
 
     if( this.auto_load )
     {
-      this.on( 'afterrender', function(){ this.store.load(); } );
+      this.on( this.auto_load_event, function(){ this.store.load(); }, this, { single: true } );
     }
 
     // Columns model
@@ -160,17 +179,16 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
 
     if( this.submenu )
     {
-      this.on( 'rowcontextmenu', this._on_rowcontextmenu_grid, this );
-
       if( this.show_action_button )
       {
         var c_actions =
         {
           align: 'center',
+          header: '&nbsp;',
           width: 40,
           fixed: true,
           scope: this,
-          renderer: this._action_button_renderer
+          renderer: Common.utils.Format.component_renderer( this._action_button_renderer, this )
         };
 
         columns.push( c_actions );
@@ -214,7 +232,8 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
 
     this.store.on( 'beforeload', function( store, options )
     {
-      if( store.list_options )
+      // Check if list_options is defined and bbar is a component with pageSize
+      if( store.list_options && this.getBottomToolbar().pageSize )
       {
         store.list_options.rows_per_page = this.getBottomToolbar().pageSize;
       }
@@ -225,7 +244,7 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
     {
       var plugin_resizer = new Ext.ux.plugin.PagingToolbarResizer(
       {
-        options : [ 5, 10, 15, 20, 25 ],
+        options: [ 5, 10, 15, 20, 25 ],
         prependCombo: true,
         displayText: Common.Langs.get( 'per_page' )
       });
@@ -233,10 +252,8 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
       default_pagination_options.plugins = [ plugin_resizer ];
     }
 
-    this.bbar = new Ext.PagingToolbar( default_pagination_options );
-
-    // Call parent
-    Common.ui.Grid.superclass.initComponent.apply( this, arguments );
+    this.bbar = this.bbar || new Ext.PagingToolbar( default_pagination_options );
+    this.callParent( arguments );
   },
 
 
@@ -244,8 +261,8 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
   /**
    * Returns the top toolbar
    *
-   * @private
    * @return {Ext.Toolbar}
+   * @private
    */
   _get_top_toolbar: function()
   {
@@ -301,59 +318,10 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
 
 
   /**
-   * Row context menu event handler
-   *
-   * @private
-   * @param {Ext.grid.GridPanel} grid
-   * @param {Number} rowIndex
-   * @param {Ext.EventObject} e
-   */
-  _on_rowcontextmenu_grid: function( grid, rowIndex, e )
-  {
-    Common.Log.debug( '[Common.ui.Grid._on_rowcontextmenu_grid] Row context menu - Submenu: ', this.submenu );
-
-    if( this.submenu.singleSelect !== false )
-    {
-      this.getSelectionModel().selectRow( rowIndex );
-    }
-
-    var current_selections = grid.getSelectionModel().getSelections();
-
-    // If less than two rows are selected OR the rowIndex is not a selected row
-    if( current_selections.length < 2 || CommonExt.Array.pluck( current_selections, 'id' ).indexOf( grid.getStore().getAt( rowIndex ).data.id ) == -1 )
-    {
-      grid.getSelectionModel().selectRow( rowIndex );
-    }
-
-    e.stopEvent();
-
-    this._show_submenu( e.getXY() );
-  },
-
-
-
-  /**
-   * Before destroy event handler
-   *
-   * @private
-   * @param {Ext.grid.GridPanel} cmp
-   */
-  _on_beforedestroy_grid: function( cmp )
-  {
-    // Remove the submenu
-    if( cmp.submenu )
-    {
-      cmp.submenu.destroy();
-    }
-  },
-
-
-
-  /**
    * After render event handler
    *
-   * @private
    * @param {Ext.grid.GridPanel} cmp
+   * @private
    */
   _on_afterrender_grid: function( cmp )
   {
@@ -363,33 +331,6 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
     {
       this._prepare_auto_reload();
     }
-  },
-
-
-
-  /**
-   * Shows submenu
-   *
-   * @private
-   * @param {Object} position
-   * @return {Boolean}
-   */
-  _show_submenu: function( position )
-  {
-    var records = CommonExt.Array.pluck( this.getSelectionModel().getSelections(), 'data' );
-    this.submenu.ctxRecords = records;
-
-    // Check if exists "_prepare" method (to modify menu items - enable, disable, hide, etc.)
-    if( this.submenu._prepare )
-    {
-      if( this.submenu._prepare.apply( this.submenu.scope || this.submenu, [ records ] ) === false )
-      {
-        return false;
-      }
-    }
-
-    this.submenu.showAt( position );
-    return true;
   },
 
 
@@ -432,43 +373,17 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
   /**
    * Renders action button
    *
-   * @private
    * @param {String} value
    * @param {Object} metaData
    * @param {Object} record
    * @param {Number} rowIndex
-   * @param {Number} colIndex
-   * @param {Object} store
-   * @return {String}
-   */
-  _action_button_renderer: function( value, metaData, record, rowIndex, colIndex, store )
-  {
-    var id = Ext.id();
-    CommonExt.Function.defer( this._create_action_button, 25, this, [ id, rowIndex ] );
-    return '<div id="' + id + '"></div>';
-  },
-
-
-
-  /**
-   * Creates action button
-   *
+   * @return {Ext.Button}
    * @private
-   * @param {String} id
-   * @param {Number} rowIndex
    */
-  _create_action_button: function( id, rowIndex )
+  _action_button_renderer: function( value, metaData, record, rowIndex )
   {
-    //Common.Log.debug( '[Common.ui.Grid._create_action_button] Create action button', id, rowIndex );
-
-    if( !Ext.DomQuery.selectNode( '#' + id ) )
+    return new Ext.Button( CommonExt.Object.merge( this.action_button_config,
     {
-      return;
-    }
-
-    var config = CommonExt.Object.merge( this.action_button_config,
-    {
-      renderTo: id,
       scope: this,
       handler: function( cmp )
       {
@@ -481,15 +396,12 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
         // Add button height to "y" position
         pos[ 1 ] += cmp.getSize().height + 2;
 
-        // Show menu at position
-        this._show_submenu( pos );
+        // Show submenu
+        var records = CommonExt.Array.pluck( this.getSelectionModel().getSelections(), 'json' );
+        this._submenu_plugin = CommonExt.Array.findBy( this.plugins, function( plugin ){ return plugin.pluginId == 'submenu'; } );
+        this._submenu_plugin._show_submenu( this, records, pos );
       }
-    });
-
-    var button = new Ext.Button( config );
-
-    // The button is not part of the grid items, so we must to destroy it when the grid is destroyed
-    this.on( 'beforedestroy', function(){ button.destroy(); } );
+    }));
   },
 
 
@@ -497,8 +409,8 @@ Common.ui.Grid = Ext.extend( Ext.grid.GridPanel,
   /**
    * Enables a button when at least one row is selected
    *
-   * @private
    * @param {Ext.Button} cmp
+   * @private
    */
   _enable_on_selected: function( cmp )
   {

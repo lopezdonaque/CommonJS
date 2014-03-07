@@ -6,11 +6,12 @@
  *     Common.ui.overrides.FieldFocus.apply();
  *
  * Example:
+ *     var textfield = new Ext.form.TextField(
  *     {
  *       fieldLabel: 'First Name',
  *       name: 'first',
  *       focusIn: true
- *     }
+ *     });
  *
  */
 CommonExt.define( 'Common.ui.overrides.FieldFocus',

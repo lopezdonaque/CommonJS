@@ -7,8 +7,9 @@ window.language_resources =
 
 Ext.onReady( function()
 {
-  var DataForm = Ext.extend( Ext.FormPanel,
+  Ext.define( 'DataForm',
   {
+    extend: 'Ext.FormPanel',
     initComponent: function()
     {
       this.items =
@@ -28,13 +29,14 @@ Ext.onReady( function()
         })
       ];
 
-      DataForm.superclass.initComponent.apply( this, arguments );
+      this.callParent( arguments );
     }
   });
 
 
-  var HomePanel = Ext.extend( Ext.ux.Portal,
+  Ext.define( 'HomePanel',
   {
+    extend: 'Ext.ux.Portal',
     border: false,
     initComponent: function()
     {
@@ -75,7 +77,7 @@ Ext.onReady( function()
         })
       ];
 
-      HomePanel.superclass.initComponent.apply( this, arguments );
+      this.callParent( arguments );
     }
   });
 
@@ -118,6 +120,10 @@ Ext.onReady( function()
     top:
     {
       items: tbar
+    },
+    center:
+    {
+      html: 'aaa'
     },
     bottom:
     {

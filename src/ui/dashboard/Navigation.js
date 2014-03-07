@@ -20,6 +20,8 @@ CommonExt.define( 'Common.ui.dashboard.Navigation',
    * @param {Boolean} options.allow_close Defines if the application tab is closable
    * @param {Boolean} options.force Forces to recreate the application tab if it is already opened
    * @param {Boolean} options.activate Forces to active the application tab
+   * @param {String} options.layout
+   * @param {Boolean} options.autoScroll
    */
   go_to: function( app_name, obj, params, options )
   {
@@ -39,18 +41,16 @@ CommonExt.define( 'Common.ui.dashboard.Navigation',
     // Check if the app_panel exists and create it
     if( !( app_panel = Ext.getCmp( app_name ) ) )
     {
-      var app_panel = new Ext.Panel(
+      var app_panel = new ( _options.use_container === true ? Ext.Container : Ext.Panel )(
       {
         id: app_name,
         title: _options.title || Common.Langs.get( app_name ),
         closable: !( _options.allow_close === false ),
         iconCls: _options.iconCls,
-        layout: 'fit', // Fills space when exists only ONE item inside
-        cls: 'app_tab', // Used to identify it by the child elements using "xx.el.dom.up( '.app_tab' )"
-        style:
-        {
-          padding: '5px'
-        }
+        layout: _options.layout || 'fit', // Fills space when exists only ONE item inside
+        autoScroll: _options.autoScroll || false,
+        cls: 'app_tab common-dashboard-app-tab', // Used to identify it by the child elements using "xx.el.dom.up( '.app_tab' )" / app_tab maintained for backward compatibility
+        listeners: _options.listeners || null
       });
 
       Ext.getCmp( Common.ui.dashboard.Dashboard.prototype.apps_container_id ).add( app_panel );
@@ -72,7 +72,7 @@ CommonExt.define( 'Common.ui.dashboard.Navigation',
       app_panel.add( new obj( params || {} ) );
 
       // Force render the hidden child components of the tab
-      app_panel.doLayout( false, true );
+      app_panel.doLayout();
     }
   }
 

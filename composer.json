@@ -1,0 +1,29 @@
+{
+  "name": "lopezdonaque/commonjs",
+  "description": "CommonJS Framework",
+  "type": "package",
+  "repositories":
+  [
+    {
+      "type": "package",
+      "package":
+      {
+        "name": "senchalabs/jsduck",
+        "version": "5.3.4",
+        "dist":
+        {
+          "url": "https://github.com/senchalabs/jsduck/releases/download/v5.3.4/jsduck-5.3.4.exe",
+          "type": "file"
+        }
+      }
+    }
+  ],
+  "require-dev":
+  {
+    "common-ant-buildlibs/svn": "dev-master",
+    "common-ant-buildlibs/git": "dev-master",
+
+    "senchalabs/jsduck": "5.3.4",
+    "packagist/yuicompressor-bin": "dev-master"
+  }
+}

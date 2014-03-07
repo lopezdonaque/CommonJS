@@ -1,0 +1,27 @@
+
+.common-upload-dropzone
+{
+  position: absolute;
+  background-color: #d3e7ef;
+  opacity: .8;
+}
+
+.common-upload-dropzone-over
+{
+  background-color: #c4d8ef;
+}
+
+/* Applied when the target property is null (so the body is used as target) */
+.common-upload-dropzone-text
+{
+  text-align: center;
+  color: #000000;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+/* Applied when the target property is defined */
+.common-upload-dropzone-target .common-upload-dropzone-text
+{
+  font-size: 15px;
+}

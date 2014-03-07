@@ -4,7 +4,8 @@
  *
  * Adapted from http://www.quirksmode.org/js/detect.html
  *
- * Usage:
+ * Usage
+ *
  *     Common.capabilities.Browser.isIE( 7,8,9 ) // Returns false for IE6
  *     Common.capabilities.Browser.isFirefox( 4 ) // Returns false for Firefox 3
  *

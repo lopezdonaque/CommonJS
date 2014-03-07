@@ -2,7 +2,8 @@
 /**
  * Date utility methods
  *
- * Examples:
+ * Examples
+ *
  *     Common.utils.Date.formatDate( CommonExt.Date.now(), Common.locale.Date.patterns.ShortDate )
  *
  */
@@ -14,11 +15,26 @@ CommonExt.define( 'Common.utils.Date',
   /**
    * Custom method to format unix timestamp
    *
+   * @deprecated
    * @param {Number} unix_timestamp
    * @param {String} pattern (Optional)
    * @return {String}
    */
   formatDate: function( unix_timestamp, pattern )
+  {
+    return this.formatTimestamp( unix_timestamp, pattern );
+  },
+
+
+
+  /**
+   * Custom method to format unix timestamp
+   *
+   * @param {Number} unix_timestamp
+   * @param {String} pattern (Optional)
+   * @return {String}
+   */
+  formatTimestamp: function( unix_timestamp, pattern )
   {
     var date = CommonExt.Date.parse( parseInt( unix_timestamp ), 'U' );
     return CommonExt.Date.format( date, pattern || Common.locale.Date.patterns.ShortDateTime );
@@ -104,6 +120,36 @@ CommonExt.define( 'Common.utils.Date',
 
     // Others (display full date)
     return this.formatDate( unix_timestamp, Common.locale.Date.patterns.ShortDate );
+  },
+
+
+
+  /**
+   * Returns the first and last day of the week by given date
+   *
+   * @param {Date} d
+   * @param {Boolean} as_timestamp
+   * @return {Object}
+   */
+  getWeekStartEnd: function( d, as_timestamp )
+  {
+    var first = d.getDate() - d.getDay() + CommonExt.DatePicker.prototype.startDay; // First day = the day of the month minus the day of the week
+    var firstday = new Date( d.setDate( first ) );
+    var ini_date = CommonExt.Date.clearTime( firstday, true );
+
+    var end_date = CommonExt.Date.add( firstday, CommonExt.Date.DAY, 6 );
+    end_date.setHours( 23, 59, 59, 999 );
+
+    if( as_timestamp === true )
+    {
+      ini_date = Number( CommonExt.Date.format( ini_date, 'U' ) );
+      end_date = Number( CommonExt.Date.format( end_date, 'U' ) );
+    }
+
+    return {
+      start: ini_date,
+      end: end_date
+    };
   }
 
 });

@@ -1,19 +1,18 @@
 
-Ext.ns( 'Common.ui.login' );
-
-
 /**
  * Login Panel
  *
  */
-Common.ui.login.LoginPanel = Ext.extend( Ext.Panel,
+Ext.define( 'Common.ui.login.LoginPanel',
 {
+  extend: 'Ext.Panel',
   cls: 'login',
 
 
   /**
    * Init component
    *
+   * @private
    */
   initComponent: function()
   {
@@ -38,8 +37,7 @@ Common.ui.login.LoginPanel = Ext.extend( Ext.Panel,
     ];
 
     this.on( 'afterrender', this._afterrender, this );
-
-    Common.ui.login.LoginPanel.superclass.initComponent.call( this, arguments );
+    this.callParent( arguments );
   },
 
 

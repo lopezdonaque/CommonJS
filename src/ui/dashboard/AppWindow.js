@@ -1,13 +1,11 @@
 
-Ext.ns( 'Common.ui.dashboard' );
-
-
 /**
  * Base class to create application window
  *
  */
-Common.ui.dashboard.AppWindow = Ext.extend( Ext.Window,
+Ext.define( 'Common.ui.dashboard.AppWindow',
 {
+  extend: 'Ext.Window',
   modal: false,
   draggable: true,
   resizable: false,
@@ -47,11 +45,11 @@ Common.ui.dashboard.AppWindow = Ext.extend( Ext.Window,
   /**
    * Init component
    *
+   * @private
    */
   initComponent: function()
   {
-    this._parent_app_tab = this.ref_cmp.el.up( '.app_tab' );
-
+    this._parent_app_tab = this.ref_cmp.el.up( '.common-tabgroup-panel' ) || this.ref_cmp.el.up( '.app_tab' );
     this.renderTo = this._parent_app_tab;
 
     this.on( 'beforeshow', function()
@@ -65,14 +63,14 @@ Common.ui.dashboard.AppWindow = Ext.extend( Ext.Window,
         Ext.getBody().mask();
       }
 
-      this.dd.constrainTo( this._parent_app_tab ); // drag constraint
+      if( this.dd ) // drag constraint
+      {
+        this.dd.constrainTo( this._parent_app_tab );
+      }
     }, this );
 
-
     this.on( this.closeAction || 'close', this._hide_modal, this );
-
-    Common.ui.dashboard.AppWindow.superclass.initComponent.apply( this, arguments );
-
+    this.callParent( arguments );
 
     /*// Move the form buttons to window buttons
     //TODO: faltaria saber como hacer el formBind y la layer de loading de toda la window cuando se hace submit

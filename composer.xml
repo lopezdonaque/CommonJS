@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="default">
+
+  <!-- **************************************************** -->
+  <!-- Installs Composer dependency manager -->
+  <!-- **************************************************** -->
+  <target name="composer-install">
+    <get src="http://getcomposer.org/composer.phar" dest="composer.phar" verbose="true" />
+
+    <exec executable="php" failonerror="true">
+      <arg value="composer.phar" />
+      <arg value="install" />
+      <arg value="--dev" />
+    </exec>
+  </target>
+
+
+
+  <!-- **************************************************** -->
+  <!-- Cleans all the Composer files -->
+  <!-- **************************************************** -->
+  <target name="composer-clean">
+    <delete dir="vendor" />
+    <delete file="composer.phar" />
+    <delete file="composer.lock" />
+  </target>
+
+</project>

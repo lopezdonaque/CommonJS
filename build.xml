@@ -2,73 +2,109 @@
 <project default="default">
 
   <property file="build.properties" />
-  <property file="${buildlibs}/common-targets/common.properties" />
-  <property file="${buildlibs}/common-targets/packages-dependencies.properties" />
+  <import file="jsfiles.xml" />
 
-
-  <!-- **************************************************** -->
-  <!-- Define classpath -->
-  <!-- **************************************************** -->
-  <import file="${buildlibs}/common-targets/define_classpath.xml" />
 
 
   <!-- **************************************************** -->
-  <!-- Sets property "svn.info.lastRev" to head svn revision -->
+  <!-- Build Libs -->
   <!-- **************************************************** -->
-  <import file="${buildlibs}/common-targets/svn_update.xml" />
-  <import file="${buildlibs}/common-targets/find_revision.xml" />
+  <import file="composer.xml" />
+  <import file="vendor/common-ant-buildlibs/svn/svn.xml" />
+  <import file="vendor/common-ant-buildlibs/git/git.xml" />
+
 
 
   <!-- **************************************************** -->
   <!-- Clean -->
   <!-- **************************************************** -->
   <target name="clean">
-    <echo message="Cleanup deployment folder ${deployment.dir}" />
     <delete dir="${deployment.dir}" />
     <delete>
       <fileset dir=".">
-        <include name="*.deb"/>
+        <include name="${package.name}*.zip"/>
       </fileset>
     </delete>
-    <echo message="Cleaned" />
   </target>
+
+
+
+  <!-- **************************************************** -->
+  <!-- Defines package version -->
+  <!-- **************************************************** -->
+  <target name="define_version" depends="common-git-revision">
+    <property name="package.version" value="${package.majorversion}.${repository.version}" />
+    <echo>Version: ${package.version}</echo>
+  </target>
+
 
 
   <!-- **************************************************** -->
   <!-- Build project -->
   <!-- **************************************************** -->
-  <target name="build_project" depends="clean, find_revision">
+  <target name="build_project" depends="clean, define_version">
 
-    <java jar="${buildlibs}/JSBuilder-2.0.3/JSBuilder2.jar" fork="true" failonerror="true">
+    <mkdir dir="${deployment.dir}" />
 
-      <!-- Location of a jsb2 project file (FULLPATH must be used) -->
-      <arg value="--projectFile" />
-      <arg value="${basedir}/project.jsb2" />
+    <!-- JS files -->
+    <mkdir dir="${deployment.dir}/builds" />
 
-      <!-- Home directory to build the project to -->
-      <arg value="--homeDir" />
-      <arg value="${basedir}" />
+    <!-- JS files (without ExtJS) (Debug) -->
+    <concat destfile="${deployment.dir}/builds/common-core-without-ext4-debug.js">
+      <filelist refid="jsfiles.core" />
+    </concat>
 
-      <!-- Use CSS minify -->
-      <arg value="--yui-compress-css" />
+    <concat destfile="${deployment.dir}/builds/common-all-without-ext4-debug.js">
+      <filelist refid="jsfiles.core" />
+      <filelist refid="jsfiles.ui" />
+    </concat>
 
-      <!-- Output detailed information about what is being built -->
-      <!-- <arg value="-v" /> -->
+    <!-- JS files (without ExtJS) (Minified/Production) -->
+    <exec command="java -jar vendor/bin/yuicompressor.jar --type js -o ${deployment.dir}/builds/common-core-without-ext4.js ${deployment.dir}/builds/common-core-without-ext4-debug.js" />
+    <exec command="java -jar vendor/bin/yuicompressor.jar --type js -o ${deployment.dir}/builds/common-all-without-ext4.js ${deployment.dir}/builds/common-all-without-ext4-debug.js" />
 
-    </java>
+    <!-- JS files (with ExtJS) (Debug) -->
+    <concat destfile="${deployment.dir}/builds/common-core-debug.js">
+      <filelist dir="external/ext/4.2.1" files="ext-all-sandbox-debug.js" />
+      <filelist dir="${deployment.dir}/builds" files="common-core-without-ext4-debug.js" />
+    </concat>
 
-    <!-- Set version -->
-    <antcall target="set_version" />
+    <concat destfile="${deployment.dir}/builds/common-all-debug.js">
+      <filelist dir="external/ext/4.2.1" files="ext-all-sandbox-debug.js" />
+      <filelist dir="${deployment.dir}/builds" files="common-all-without-ext4-debug.js" />
+    </concat>
+
+    <!-- JS files (with ExtJS) (Minified/Production) -->
+    <concat destfile="${deployment.dir}/builds/common-core.js">
+      <filelist dir="external/ext/4.2.1" files="ext-all-sandbox.js" />
+      <filelist dir="${deployment.dir}/builds" files="common-core-without-ext4.js" />
+    </concat>
+
+    <concat destfile="${deployment.dir}/builds/common-all.js">
+      <filelist dir="external/ext/4.2.1" files="ext-all-sandbox.js" />
+      <filelist dir="${deployment.dir}/builds" files="common-all-without-ext4.js" />
+    </concat>
+
+    <!-- Theme -->
+    <mkdir dir="${deployment.dir}/resources/themes/default" />
+    <exec command="${sass} ${basedir}/resources/themes/default/theme.scss ${deployment.dir}/resources/themes/default/common-all.css" />
+
+    <!-- Resources -->
+    <copy todir="${deployment.dir}">
+      <fileset dir="${basedir}" includes="src/**" />
+      <fileset dir="${basedir}" includes="external/**" />
+      <fileset dir="${basedir}" includes="examples/**" />
+      <fileset dir="${basedir}" includes="locale/**" />
+      <fileset dir="${basedir}" includes="examples/**" />
+      <fileset dir="${basedir}" includes="resources/**" excludes="**/sass*, **/*.scss" />
+    </copy>
+
+    <!-- Set version (Do not use "expandproperties" because it's very slow on large files) -->
+    <echo>Replace $${package.version}</echo>
+    <replace dir="${deployment.dir}" token="$${package.version}" value="${package.version}" />
+
   </target>
 
-
-  <!-- **************************************************** -->
-  <!-- Set version on build files -->
-  <!-- **************************************************** -->
-  <target name="set_version">
-    <replace dir="${deployment.builds_dir}" token="{VERSION}" value="${version}" />
-    <replace file="${deployment.src_dir}/Common.js" token="{VERSION}" value="${version}" />
-  </target>
 
 
   <!-- **************************************************** -->
@@ -83,7 +119,7 @@
 
       <!-- Documentation title -->
       <arg value="--title" />
-      <arg value="${package.description} ${version}" />
+      <arg value="${package.description} ${package.version}" />
 
       <!-- Examples config file -->
       <arg value="--examples" />
@@ -99,7 +135,7 @@
 
       <!-- Output folder -->
       <arg value="--output" />
-      <arg value="${deployment.docs_dir}" />
+      <arg value="${deployment.dir}/docs" />
 
       <!-- Make JSDuck ignore some other type names (to avoid warnings) -->
       <arg value="--external" />
@@ -107,59 +143,26 @@
 
       <!-- Source files paths -->
       <!-- <arg value="${deployment.dir}/external" /> -->
-      <arg value="${deployment.src_dir}" />
+      <arg value="${deployment.dir}/src" />
     </exec>
   </target>
 
 
+
   <!-- **************************************************** -->
-  <!-- Generate Debian package -->
+  <!-- Generate development package -->
   <!-- **************************************************** -->
   <target name="package" depends="build_project, jsdoc">
 
     <!-- Deployment package -->
-    <deb package="${package.fullname_versioned}" todir="." section="libs" depends="${dependencies.commom-html-framework}">
-      <version upstream="${version}" />
-      <maintainer name="${maintainer.name}" email="${maintainer.email}" />
-      <description synopsis="${package.description}">${package.description}</description>
-      <tarfileset dir="deployment" prefix="${package.install.dir}/${package.majorversion}">
-        <include name="**/**" />
-      </tarfileset>
-    </deb>
-
-    <!-- Devel package without dependencies -->
-    <deb package="${package.fullname_versioned_dev}" todir="." section="libs">
-      <version upstream="${version}" />
-      <maintainer name="${maintainer.name}" email="${maintainer.email}" />
-      <description synopsis="${package.description}">${package.description}</description>
-      <tarfileset dir="deployment" prefix="${package.install.dir}/${package.majorversion}">
-        <include name="**/**" />
-      </tarfileset>
-    </deb>
+    <zip destfile="${package.name}-${package.version}.zip" basedir="deployment" />
   </target>
 
-
-  <!-- **************************************************** -->
-  <!-- Install Debian package -->
-  <!-- **************************************************** -->
-  <import file="${buildlibs}/common-targets/install_deb_versioned.xml" />
-  <import file="${buildlibs}/common-targets/install_deb_versioned_dev.xml" />
-
-
-  <!-- **************************************************** -->
-  <!-- Update Debian repository (Adds the current package to the Debian repository) -->
-  <!-- **************************************************** -->
-  <import file="${buildlibs}/common-targets/hostname.xml" />
-  <import file="${buildlibs}/common-targets/update_debian_repository_versioned.xml" />
-  <import file="${buildlibs}/common-targets/update_debian_repository_versioned_dev.xml" />
-  <import file="${buildlibs}/common-targets/update_integra_repository_versioned.xml" />
 
 
   <!-- **************************************************** -->
   <!-- Build targets -->
   <!-- **************************************************** -->
-  <target name="default" depends="package,update_debian_repository_versioned,update_debian_repository_versioned_dev" />
-  <target name="devel" depends="package,install_deb_versioned_dev" />
-  <target name="prerelease" depends="package,update_integra_repository_versioned" />
+  <target name="default" />
 
 </project>

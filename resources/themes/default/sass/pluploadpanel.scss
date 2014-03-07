@@ -1,0 +1,123 @@
+
+.common-upload-uploadpanel-body
+{
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.common-upload-uploadpanel-body dl
+{
+  padding: 5px;
+  border-bottom: 1px solid #d0d0d0;
+  font: normal 11px arial,tahoma,verdana,helvetica;
+  width: 100%;
+}
+
+.common-upload-uploadpanel-body dt
+{
+  float: left;
+  cursor: pointer;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.common-upload-uploadpanel-row-over
+{
+  background-color: #eff5fb;
+}
+
+.common-upload-uploadpanel-row-selected
+{
+  background-color: #eff5fb;
+}
+
+.common-upload-uploadpanel-emptytext
+{
+  font-size: 12px;
+}
+
+.common-upload-uploadpanel-item-name
+{
+  width: 40%;
+}
+
+.common-upload-uploadpanel-item-filesize
+{
+  width: 15%
+}
+
+.common-upload-uploadpanel-item-status
+{
+  width: 25%;
+}
+
+.common-upload-uploadpanel-item-progressbar
+{
+  width: 25%;
+}
+
+.common-upload-uploadpanel-button
+{
+  padding-right: 10px;
+}
+
+
+
+/* Cancel button */
+
+.common-upload-uploadpanel-button-cancel
+{
+  display: none;
+}
+
+.common-upload-uploadpanel-uploading .common-upload-uploadpanel-button-cancel
+{
+  display: block;
+}
+
+
+
+/* Remove item */
+
+.common-upload-uploadpanel-item-remove
+{
+  float: right !important;
+  margin-right: 15px;
+}
+
+.common-upload-uploadpanel-item-remove div
+{
+  background: url( #{$images-path}/upload/remove.png ) no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.common-upload-uploadpanel-item-remove span
+{
+  display: none;
+}
+
+
+
+/* Progress bar */
+
+.common-upload-uploadpanel-item-progress
+{
+  width: 120px;
+  border: 1px solid #c0c0c0;
+  position: relative;
+}
+
+.common-upload-uploadpanel-item-bar
+{
+  height: 7px;
+  background-color: #c0c0c0;
+  width: 1%;
+}

@@ -16,7 +16,8 @@ CommonExt.define( 'Common.locale',
       LongTime: 'g:i:s A',
       ShortDateTime: 'j/n/Y g:i A',
       LongDateTime: 'j/n/Y g:i:s A',
-      VeryShortDate: 'd M'
+      VeryShortDate: 'd M',
+      FullDateTime: "l, F d, Y g:i:s A"
     }
   }
 
