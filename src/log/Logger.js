@@ -5,14 +5,17 @@
  * #Examples:
  *
  * Set level to be displayed on the console
+ *
  *     Common.Log.displayLevel = Common.Log.LEVEL_DEBUG;
  *
  *
  * Log methods by level
+ *
  *     Common.Log.debug( 'text', { a: 1 }, function(){} );
  *     Common.Log.error( 'text' );
  *
  * Show the log:
+ *
  *     Common.Log.show_log();
  *
  */
@@ -134,8 +137,8 @@ CommonExt.define( 'Common.log.Logger',
 
       switch( level )
       {
-        case this.LEVEL_DEBUG: // "console.debug" not exists in IE
-          method = ( document.all ) ? console.log : console.debug;
+        case this.LEVEL_DEBUG: // "console.debug" not exists in IE<10
+          method = console.log;
           break;
 
         case this.LEVEL_INFO:
@@ -159,7 +162,7 @@ CommonExt.define( 'Common.log.Logger',
           break;
       }
 
-      if( document.all ) // IE
+      if( !method.apply ) // IE<10
       {
         // Workaround for IE: "console.xx.apply" is undefined
         Function.prototype.apply.apply( method, [ console, args ] );
@@ -169,7 +172,7 @@ CommonExt.define( 'Common.log.Logger',
         method.apply( console, args );
       }
     }
-    catch( exc ) { /* Nothing to do */ }
+    catch( exc ){ /* Nothing to do */ }
   },
 
 

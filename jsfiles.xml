@@ -2,6 +2,7 @@
 <project>
 
   <filelist id="jsfiles.core" dir="src" files="
+    ../external/ext-custom-sandbox-4.2.1.js
     Common.js
     Langs.js
     log/Logger.js
@@ -33,6 +34,7 @@
     rpc/JsonRpc.js
     api/Api.js
     api/Proxy.js
+    api/Record.js
     api/Store.js
     api/Rpc.js
     api/RpcEvents.js" />

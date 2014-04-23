@@ -8,22 +8,26 @@
  * #Examples
  *
  * Create notificator instance:
+ *
  *     var notificator = new Common.ui.Notificator(
  *     {
  *       close_text: 'Close'
  *     });
  *
  * Using shortcut methods:
+ *
  *     notificator.show_error( 'This is an error message' );
  *     notificator.show_success( 'This is a success message' );
  *     notificator.show_warning( 'This is a warning message' );
  *     notificator.show_info( 'This is an info message' );
  *
  * Using custom types:
+ *
  *     notificator.show_by_type( 'This is a loading message', 'loading' );
  *     notificator.show_by_type( 'This is an appointment message', 'appointment' );
  *
  * Using show method:
+ *
  *     notificator.show(
  *     {
  *       text: 'Custom text',
@@ -40,6 +44,7 @@
  *     });
  *
  * Hide notificator:
+ *
  *     notificator.hide();
  *
  */
@@ -137,7 +142,7 @@ Ext.define( 'Common.ui.Notificator',
     {
       if( !options.discard )
       {
-        CommonExt.Function.defer( this.show, 1000, this, [ options ] );
+        CommonExt.defer( this.show, 1000, this, [ options ] );
       }
 
       return;
@@ -152,7 +157,7 @@ Ext.define( 'Common.ui.Notificator',
     if( options.sticky !== true )
     {
       var delay = options.hide_delay || ( this._get_delay_by_text( options.text ) );
-      this._hide_timeout_id = CommonExt.Function.defer( this.hide, delay, this );
+      this._hide_timeout_id = CommonExt.defer( this.hide, delay, this );
     }
   },
 

@@ -6,6 +6,7 @@
  * http://www.semnanweb.com/jquery-plugin/base64.html
  *
  * Usage:
+ *
  *     var enc = Common.crypt.Base64.encode( 'xxx' );
  *     var dec = Common.crypt.Base64.decode( enc );
  *

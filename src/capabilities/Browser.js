@@ -131,7 +131,7 @@ CommonExt.define( 'Common.capabilities.Browser',
    * Check if the browser is Mozilla Firefox.
    * If numeric or string arguments are passed those are checked against the major version.
    *
-   * @param {String[]} [arguments*] versions to check
+   * @param {String[]} [arguments] versions to check
    * @return {Boolean}
    */
   isFirefox: function()
@@ -217,7 +217,7 @@ CommonExt.define( 'Common.capabilities.Browser',
   /**
    * Check if the os is one of the given in the arguments
    *
-   * @param {String[]} [arguments*]
+   * @param {String[]} [arguments]
    */
   isOS: function()
   {

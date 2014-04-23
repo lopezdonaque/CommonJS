@@ -3,6 +3,7 @@
  * #Examples:
  *
  * Available endpoint configurations:
+ *
  *     // 1. Endpoint from the same domain
  *     Common.api.Api.endpoint = '/endpoint.php';
  *
@@ -18,10 +19,12 @@
  *
  *
  * Configure authentication token:
+ *
  *     Common.api.Api.token = '89c57dfdc2dcb5d3380f9edce9d806459fee14fa';
  *
  *
  * Request example:
+ *
  *     var rpc = new Common.api.Rpc( 'users', 'get_user', [ 327 ] );
  *     rpc.on( Common.api.RpcEvents.SUCCESS, function( data ){ Common.Log.debug( 'success', data ); }, scope );
  *     rpc.on( Common.api.RpcEvents.ERROR, function( data ){ Common.Log.debug( 'error', data ); }, scope );
@@ -29,6 +32,7 @@
  *
  *
  * Using shorthands:
+ *
  *     var rpc = new Common.api.Rpc( 'users', 'get_user', [ 327 ] );
  *     rpc.on_success( function( data ){ Common.Log.debug( 'success', data ); }, scope );
  *     rpc.on_error( function( data ){ Common.Log.debug( 'error', data ); }, scope );
@@ -36,6 +40,7 @@
  *
  *
  * Using custom options on a single request:
+ *
  *     var options =
  *     {
  *       endpoint: 'http://api.domain.com/',
@@ -140,8 +145,25 @@ CommonExt.define( 'Common.api.Rpc',
      *
      * @property {Boolean}
      */
-    debug: true
+    debug: true,
+
+
+    /**
+     * Number of retries on error
+     *
+     * @property {Number}
+     */
+    retries_on_error: 0
   },
+
+
+  /**
+   * Attemps on error
+   *
+   * @var {Number}
+   * @private
+   */
+  _attemps_on_error: 0,
 
 
 
@@ -238,7 +260,7 @@ CommonExt.define( 'Common.api.Rpc',
           return;
         }
 
-        this._handle_failure();
+        this._handle_failure( resp.timedout ? 'timeout' : 'error' );
       }
     });
   },
@@ -265,8 +287,8 @@ CommonExt.define( 'Common.api.Rpc',
       listeners:
       {
         success: CommonExt.bind( this._check_response, this ),
-        error: CommonExt.bind( this._handle_failure, this ),
-        timeout: CommonExt.bind( this._handle_failure, this )
+        error: CommonExt.pass( this._handle_failure, [ 'error' ], this ),
+        timeout: CommonExt.pass( this._handle_failure, [ 'timeout' ], this )
       }
     }).request();
   },
@@ -293,8 +315,8 @@ CommonExt.define( 'Common.api.Rpc',
       listeners:
       {
         success: CommonExt.bind( this._check_response, this ),
-        error: CommonExt.bind( this._handle_failure, this ),
-        timeout: CommonExt.bind( this._handle_failure, this )
+        error: CommonExt.pass( this._handle_failure, [ 'error' ], this ),
+        timeout: CommonExt.pass( this._handle_failure, [ 'timeout' ], this )
       }
     }).request();
   },
@@ -418,11 +440,19 @@ CommonExt.define( 'Common.api.Rpc',
   /**
    * Handles timeout callback
    *
+   * @param {String} reason
    * @private
    */
-  _handle_failure: function()
+  _handle_failure: function( reason )
   {
-    Common.Log.warn( '[Common.api.Rpc._handle_failure] Timeout failure [' + this.entity + '] [' + this.method + ']' );
+    Common.Log.warn( '[Common.api.Rpc._handle_failure] Error [reason = ' + reason + '] [entity = ' + this.entity + '] [method = ' + this.method + ']' );
+
+    if( this.retries_on_error > 0 && this._attemps_on_error++ < this.retries_on_error )
+    {
+      Common.Log.warn( '[Common.api.Rpc._handle_failure] Retrying [retries_on_error = ' + this.retries_on_error + '] [attempt = ' + this._attemps_on_error + ']' );
+      this.request();
+      return;
+    }
 
     this._destroy_trans();
     this.trans = false;

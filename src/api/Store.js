@@ -7,6 +7,7 @@
  *
  *
  * Search filters example:
+ *
  *     this.store.search_filters =
  *     [
  *       // Search filter 1
@@ -41,6 +42,7 @@
  *
  *
  * Search field filters example:
+ *
  *     this.store.search_field_filters =
  *     [
  *       {
@@ -55,6 +57,7 @@
  *
  *
  * Group filters association example:
+ *
  *     this.store.group_filters_association =
  *     {
  *       join_type: 'OR',

@@ -7,6 +7,7 @@
  * It sends a parameter called "transport" with "iframe" as value.
  *
  * Usage:
+ *
  *     new Common.io.Iframe(
  *     {
  *       url: 'http://domain.com/iframe_test.php',

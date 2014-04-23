@@ -3,6 +3,7 @@
  * Dashboard
  *
  * Usage:
+ *
  *     var dashboard = new Common.ui.dashboard.Dashboard(
  *     {
  *       top:

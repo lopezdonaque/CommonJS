@@ -3,6 +3,7 @@
  * Manages language resource from global or specific contexts
  *
  * Define language resources object:
+ *
  *     window.language_resources =
  *     {
  *       "":
@@ -16,11 +17,12 @@
  *     };
  *
  * Retrieve resource from global:
+ *
  *     var text = Common.Langs.get( 'consultant' );
  *
  * Retrieve resource from specific context. It automatically try to search in global context if not found in the specific context.
- *     var text = Common.Langs.get( 'context1', 'consultant' );
  *
+ *     var text = Common.Langs.get( 'context1', 'consultant' );
  *
  */
 CommonExt.define( 'Common.Langs',

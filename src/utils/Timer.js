@@ -6,27 +6,25 @@
  *
  * Chronometer:
  *
- *     var options =
+ *     var chronometer = new Common.utils.Timer(
  *     {
  *       frequency: 1,
  *       display_object_id: 'timer',
  *       display_format: '{H}h {M}m {S}s {m}ms',
  *       starts_at: 5000
- *     };
- *     var chronometer = new Common.utils.Timer( options );
+ *     });
  *     chronometer.start();
  *
  * Clock:
  *
- *     var options =
+ *     var clock = new Common.utils.Timer(
  *     {
  *       frequency: 1,
  *       display_object_id: 'timer',
  *       display_format: '{H}h {M}m {S}s {m}ms',
  *       starts_at: new Date(),
- *       offset: 120
- *     };
- *     var clock = new Common.utils.Timer( options );
+ *       offset: new Date().getTimezoneOffset() * -1
+ *     });
  *     clock.start();
  *
  */
@@ -35,6 +33,7 @@ CommonExt.define( 'Common.utils.Timer',
   extend: 'CommonExt.util.Observable',
   config:
   {
+
     /**
      * Frequency to update the timer
      *
@@ -79,8 +78,8 @@ CommonExt.define( 'Common.utils.Timer',
   /**
    * Interval identifier
    *
-   * @private
    * @property {Number}
+   * @private
    */
   _interval_id: null,
 
@@ -88,8 +87,8 @@ CommonExt.define( 'Common.utils.Timer',
   /**
    * Time start
    *
-   * @private
    * @property {Number}
+   * @private
    */
   _time_start: null,
 
@@ -97,8 +96,8 @@ CommonExt.define( 'Common.utils.Timer',
   /**
    * Time end
    *
-   * @private
    * @property {Number}
+   * @private
    */
   _time_end: null,
 
@@ -106,14 +105,15 @@ CommonExt.define( 'Common.utils.Timer',
   /**
    * Current date time
    *
-   * @private
    * @property {Number}
+   * @private
    */
   _time_now: 0,
 
 
   statics:
   {
+
     /**
      * Returns milliseconds in the required format
      *
@@ -143,6 +143,7 @@ CommonExt.define( 'Common.utils.Timer',
   },
 
 
+
   /**
    * Constructor
    *
@@ -158,7 +159,6 @@ CommonExt.define( 'Common.utils.Timer',
 
   /**
    * Starts the timer
-   *
    */
   start: function()
   {
@@ -173,7 +173,6 @@ CommonExt.define( 'Common.utils.Timer',
 
   /**
    * Stops the timer
-   *
    */
   stop: function()
   {
@@ -185,7 +184,6 @@ CommonExt.define( 'Common.utils.Timer',
 
   /**
    * Updates the timer
-   *
    */
   update: function()
   {
@@ -197,7 +195,6 @@ CommonExt.define( 'Common.utils.Timer',
 
   /**
    * Displays the timer
-   *
    */
   display: function()
   {

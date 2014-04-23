@@ -9,6 +9,7 @@
  * It internally uses "Common.ui.Toggler".
  *
  * Configure dispatcher on ComboBox:
+ *
  *     var combo_dispatcher = new Ext.form.ComboBox(
  *     {
  *       plugins: [ new Common.ui.plugins.toggler.Dispatcher() ]

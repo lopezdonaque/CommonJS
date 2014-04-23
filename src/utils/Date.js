@@ -133,7 +133,7 @@ CommonExt.define( 'Common.utils.Date',
    */
   getWeekStartEnd: function( d, as_timestamp )
   {
-    var first = d.getDate() - d.getDay() + CommonExt.DatePicker.prototype.startDay; // First day = the day of the month minus the day of the week
+    var first = d.getDate() - d.getDay() + Common.locale.Date.startDay; // First day = the day of the month minus the day of the week
     var firstday = new Date( d.setDate( first ) );
     var ini_date = CommonExt.Date.clearTime( firstday, true );
 

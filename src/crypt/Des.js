@@ -8,6 +8,7 @@
  * http://www.netdealing.com
  *
  * Usage:
+ *
  *     var crypt = Common.utils.Des.encrypt( 'foo' );
  *     var decrypt = Common.utils.Des.decrypt( crypt );
  *

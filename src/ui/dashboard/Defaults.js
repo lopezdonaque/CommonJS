@@ -5,6 +5,7 @@
  * Modifies some default properties of ExtJS components.
  *
  * Usage:
+ *
  *     Common.ui.dashboard.Defaults.apply();
  *
  */

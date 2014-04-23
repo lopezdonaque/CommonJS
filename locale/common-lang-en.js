@@ -9,6 +9,7 @@ CommonExt.define( 'Common.locale',
 
   Date:
   {
+    startDay: 0,
     patterns:
     {
       ShortDate: 'j/n/Y',

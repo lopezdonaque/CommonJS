@@ -1,10 +1,11 @@
-﻿
+
 /**
  * Md5 generator
  *
  * Based on: https://github.com/placemarker/jQuery-MD5
  *
  * Usage:
+ *
  *     var md5 = Common.crypt.Md5.encode( 'foo' );
  *
  */

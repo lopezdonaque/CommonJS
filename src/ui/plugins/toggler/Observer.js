@@ -7,6 +7,7 @@
  * It internally uses "Common.ui.Toggler".
  *
  * Configure observers:
+ *
  *     var field = new Ext.form.DateField(
  *     {
  *       fieldLabel: 'Date',

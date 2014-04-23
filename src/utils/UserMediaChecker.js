@@ -26,6 +26,7 @@
  *         unsupported: function(){ console.log( 'unsupported' ); }
  *       }
  *     }).start();
+ *
  */
 CommonExt.define( 'Common.utils.UserMediaChecker',
 {
@@ -40,7 +41,19 @@ CommonExt.define( 'Common.utils.UserMediaChecker',
      *
      * @var {Number}
      */
-    wait_request: 500
+    wait_request: 500,
+
+
+    /**
+     * The media types that support the LocalMediaStream object returned in the successCallback
+     *
+     * @var {Object}
+     */
+    constraints:
+    {
+      audio: true,
+      video: true
+    }
   },
 
 
@@ -142,7 +155,7 @@ CommonExt.define( 'Common.utils.UserMediaChecker',
    */
   _request: function()
   {
-    this.getMedia().apply( navigator, [ { video: true, audio: true }, CommonExt.bind( this._request_success, this ), CommonExt.bind( this._request_error, this ) ] );
+    this.getMedia().apply( navigator, [ this.config.constraints, CommonExt.bind( this._request_success, this ), CommonExt.bind( this._request_error, this ) ] );
   },
 
 

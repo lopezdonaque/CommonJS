@@ -3,6 +3,7 @@
  * Adds a side icon to the field
  *
  * Usage:
+ *
  *     var field = new Ext.form.TextField(
  *     {
  *       fieldLabel: 'First Name',
@@ -28,6 +29,7 @@
  *     });
  *
  * Access to side icon programatically:
+ *
  *     var sideicon = field.plugins[0].sideIcon;
  *
  */

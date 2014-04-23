@@ -3,9 +3,11 @@
  * Gravatar utility methods
  *
  * Usage:
+ *
  *     var url = Common.utils.Gravatar.get_url( 'foo@domain.com' );
  *
  * Example with options:
+ *
  *     var url = Common.utils.Gravatar.get_url( 'foo@domain.com',
  *     {
  *       size: 512,

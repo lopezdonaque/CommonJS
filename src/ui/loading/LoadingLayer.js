@@ -3,6 +3,7 @@
  * Manages loading layer
  *
  * Usage:
+ *
  *     Common.ui.loading.LoadingLayer.show();
  *     Common.ui.loading.LoadingLayer.show( 'Custom text' );
  *     Common.ui.loading.LoadingLayer.hide();

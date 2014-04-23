@@ -3,6 +3,7 @@
  * Detects browser plugins
  *
  * Usage:
+ *
  *     var hasFlash = Common.capabilities.BrowserPlugins.hasFlash();
  *
  */

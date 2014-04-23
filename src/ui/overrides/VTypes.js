@@ -3,9 +3,11 @@
  * Overrides to add custom vtypes
  *
  * Apply to custom vtypes:
+ *
  *     Common.ui.overrides.VTypes.apply();
  *
  * Apply some custom vtypes:
+ *
  *     Common.ui.overrides.VTypes.applyEqualTo();
  *     Common.ui.overrides.VTypes.applyHttpUrl();
  *

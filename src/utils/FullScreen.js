@@ -4,6 +4,7 @@
  * Based on: http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugin/
  *
  * Usage:
+ *
  *     if( Common.utils.FullScreen.isSupported() )
  *     {
  *       Ext.getBody().on( 'click', function()
@@ -13,6 +14,7 @@
  *     }
  *
  * Listen fullscreen change events:
+ *
  *     Common.utils.FullScreen.on_fullscreenchange( function()
  *     {
  *       alert( 'fullscreen has been changed' );

@@ -3,9 +3,11 @@
  * Overrides to set the focus on field rendered
  *
  * Usage:
+ *
  *     Common.ui.overrides.FieldFocus.apply();
  *
  * Example:
+ *
  *     var textfield = new Ext.form.TextField(
  *     {
  *       fieldLabel: 'First Name',

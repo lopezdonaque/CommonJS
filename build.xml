@@ -49,45 +49,28 @@
     <!-- JS files -->
     <mkdir dir="${deployment.dir}/builds" />
 
-    <!-- JS files (without ExtJS) (Debug) -->
-    <concat destfile="${deployment.dir}/builds/common-core-without-ext4-debug.js">
+    <!-- JS files (Core Debug) -->
+    <concat destfile="${deployment.dir}/builds/common-core-debug.js">
       <filelist refid="jsfiles.core" />
     </concat>
 
-    <concat destfile="${deployment.dir}/builds/common-all-without-ext4-debug.js">
+    <!-- JS files (All Debug) -->
+    <concat destfile="${deployment.dir}/builds/common-all-debug.js">
       <filelist refid="jsfiles.core" />
       <filelist refid="jsfiles.ui" />
     </concat>
 
-    <!-- JS files (without ExtJS) (Minified/Production) -->
-    <exec command="java -jar vendor/bin/yuicompressor.jar --type js -o ${deployment.dir}/builds/common-core-without-ext4.js ${deployment.dir}/builds/common-core-without-ext4-debug.js" />
-    <exec command="java -jar vendor/bin/yuicompressor.jar --type js -o ${deployment.dir}/builds/common-all-without-ext4.js ${deployment.dir}/builds/common-all-without-ext4-debug.js" />
+    <!-- JS files (Core Minified) -->
+    <exec command="java -jar vendor/bin/yuicompressor.jar --type js -o ${deployment.dir}/builds/common-core.js ${deployment.dir}/builds/common-core-debug.js" />
 
-    <!-- JS files (with ExtJS) (Debug) -->
-    <concat destfile="${deployment.dir}/builds/common-core-debug.js">
-      <filelist dir="external/ext/4.2.1" files="ext-all-sandbox-debug.js" />
-      <filelist dir="${deployment.dir}/builds" files="common-core-without-ext4-debug.js" />
-    </concat>
+    <!-- JS files (All Minified) -->
+    <exec command="java -jar vendor/bin/yuicompressor.jar --type js -o ${deployment.dir}/builds/common-all.js ${deployment.dir}/builds/common-all-debug.js" />
 
-    <concat destfile="${deployment.dir}/builds/common-all-debug.js">
-      <filelist dir="external/ext/4.2.1" files="ext-all-sandbox-debug.js" />
-      <filelist dir="${deployment.dir}/builds" files="common-all-without-ext4-debug.js" />
-    </concat>
-
-    <!-- JS files (with ExtJS) (Minified/Production) -->
-    <concat destfile="${deployment.dir}/builds/common-core.js">
-      <filelist dir="external/ext/4.2.1" files="ext-all-sandbox.js" />
-      <filelist dir="${deployment.dir}/builds" files="common-core-without-ext4.js" />
-    </concat>
-
-    <concat destfile="${deployment.dir}/builds/common-all.js">
-      <filelist dir="external/ext/4.2.1" files="ext-all-sandbox.js" />
-      <filelist dir="${deployment.dir}/builds" files="common-all-without-ext4.js" />
-    </concat>
 
     <!-- Theme -->
     <mkdir dir="${deployment.dir}/resources/themes/default" />
     <exec command="${sass} ${basedir}/resources/themes/default/theme.scss ${deployment.dir}/resources/themes/default/common-all.css" />
+
 
     <!-- Resources -->
     <copy todir="${deployment.dir}">
@@ -98,6 +81,16 @@
       <fileset dir="${basedir}" includes="examples/**" />
       <fileset dir="${basedir}" includes="resources/**" excludes="**/sass*, **/*.scss" />
     </copy>
+
+
+    <!-- Merge external with Common locales -->
+    <concat destfile="${deployment.dir}/locale/common-lang-ca.js" append="true"><fileset file="${basedir}/external/locale/ext-lang-ca.js" /></concat>
+    <concat destfile="${deployment.dir}/locale/common-lang-de.js" append="true"><fileset file="${basedir}/external/locale/ext-lang-de.js" /></concat>
+    <concat destfile="${deployment.dir}/locale/common-lang-en.js" append="true"><fileset file="${basedir}/external/locale/ext-lang-en.js" /></concat>
+    <concat destfile="${deployment.dir}/locale/common-lang-es.js" append="true"><fileset file="${basedir}/external/locale/ext-lang-es.js" /></concat>
+    <concat destfile="${deployment.dir}/locale/common-lang-fr.js" append="true"><fileset file="${basedir}/external/locale/ext-lang-fr.js" /></concat>
+    <concat destfile="${deployment.dir}/locale/common-lang-it.js" append="true"><fileset file="${basedir}/external/locale/ext-lang-it.js" /></concat>
+
 
     <!-- Set version (Do not use "expandproperties" because it's very slow on large files) -->
     <echo>Replace $${package.version}</echo>

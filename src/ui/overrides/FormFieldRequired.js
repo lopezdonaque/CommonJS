@@ -6,6 +6,7 @@
  * - [This post](http://www.sencha.com/forum/showthread.php?101774-How-to-mark-a-label-with-a-required-icon&p=477625&viewfull=1#post477625)
  *
  * Usage:
+ *
  *     Common.ui.overrides.FormFieldRequired.apply();
  *
  */

@@ -3,10 +3,12 @@
  * Base class to create grids
  *
  * Configure action button:
+ *
  *     Common.ui.Grid.prototype.action_button_config.tooltip = 'View actions';
  *     Common.ui.Grid.prototype.action_button_config.iconCls = 'fugue fugue-alarm-clock';
  *
  * Use search field filters of the store to automatically add a search field and use its value as the value of each filter:
+ *
  *     store.search_field_filters =
  *     [
  *       {
