@@ -1,11 +1,11 @@
 
 .common-grid-action-menu-icon
 {
-  background-image: url( #{$images-path}/grid/ui-menu.png );
+  background-image: url( #{$commonjs-images-path}/grid/ui-menu.png );
   background-repeat: no-repeat;
 }
 
 .common-grid-action-menu-icon:hover
 {
-  background-image: url( #{$images-path}/grid/ui-menu-blue.png );
+  background-image: url( #{$commonjs-images-path}/grid/ui-menu-blue.png );
 }

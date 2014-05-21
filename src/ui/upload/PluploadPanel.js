@@ -12,7 +12,7 @@ Ext.define( 'Common.ui.upload.PluploadPanel',
   /**
    * CSS classes
    *
-   * @var {Object}
+   * @property {Object}
    */
   css:
   {
@@ -25,7 +25,7 @@ Ext.define( 'Common.ui.upload.PluploadPanel',
   /**
    * Defines the dropzone target (element or body)
    *
-   * @var {String}
+   * @property {String}
    */
   dropzone_target: 'body',
 
@@ -33,7 +33,7 @@ Ext.define( 'Common.ui.upload.PluploadPanel',
   /**
    * Uploader instance
    *
-   * @var {Common.upload.Uploader}
+   * @property {Common.upload.Uploader}
    */
   uploader: null,
 

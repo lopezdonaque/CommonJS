@@ -39,7 +39,7 @@ CommonExt.define( 'Common.utils.UserMediaChecker',
      *
      * If permissions are already accepted, the navigator may take some time to respond.
      *
-     * @var {Number}
+     * @property {Number}
      */
     wait_request: 500,
 
@@ -47,7 +47,7 @@ CommonExt.define( 'Common.utils.UserMediaChecker',
     /**
      * The media types that support the LocalMediaStream object returned in the successCallback
      *
-     * @var {Object}
+     * @property {Object}
      */
     constraints:
     {

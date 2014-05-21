@@ -1,0 +1,36 @@
+
+.common-wizard-bar
+{
+  height: 30px;
+  margin: 10px 0;
+}
+
+.common-wizard-bar-step
+{
+  float: left;
+  margin-right: 10px;
+  color: white;
+  height: 28px;
+  font-size: 11px;
+  border-radius: 7px;
+  padding: 0 20px 0 5px;
+  background: url( #{$commonjs-images-path}/wizard/wizard_arrow.png ) no-repeat right;
+  border-right: 10px solid transparent;
+  font-family: Arial, Verdana, Tahoma, San-Serif;
+  line-height: 28px;
+  background-color: #557188;
+}
+
+.common-wizard-bar-step-selected /* the current step */
+{
+  cursor: default;
+  text-decoration: none;
+  background-color: #1A3244;
+  font-weight: bold;
+}
+
+.common-wizard-bar-step-activated /* the step is activated so the user could click on it */
+{
+  cursor: pointer;
+  text-decoration: underline;
+}

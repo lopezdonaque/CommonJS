@@ -43,7 +43,7 @@ Ext.define( 'Common.ui.dashboard.Dashboard',
   /**
    * Applications container id
    *
-   * @var {String}
+   * @property {String}
    */
   apps_container_id: 'app_tabs',
 

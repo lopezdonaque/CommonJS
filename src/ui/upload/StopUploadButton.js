@@ -12,7 +12,7 @@ Ext.define( 'Common.ui.upload.StopUploadButton',
   /**
    * Uploader instance
    *
-   * @var {Common.upload.Uploader}
+   * @property {Common.upload.Uploader}
    */
   uploader: null,
 

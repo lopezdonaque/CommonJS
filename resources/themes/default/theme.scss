@@ -1,15 +1,18 @@
 
 /* Version: ${package.version} */
 
-$images-path: "images";
+$commonjs-images-path: "images";
 
 
 @import "sass/helptext.scss";
 @import "sass/info.scss";
 @import "sass/notificator.scss";
+@import "sass/notifier-gritter.scss";
 @import "sass/loadinglayer.scss";
 @import "sass/tabgroup.scss";
 @import "sass/grid.scss";
 @import "sass/dashboard.scss";
 @import "sass/pluploadpanel.scss";
 @import "sass/dropzone.scss";
+@import "sass/wizard.scss";
+@import "sass/colorfield.scss";

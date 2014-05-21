@@ -21,7 +21,7 @@ CommonExt.define( 'Common.crypt.Des',
   /**
    * Key to encrypt or decrypt strings
    *
-   * @var {String}
+   * @property {String}
    */
   key: '',
 

@@ -3,7 +3,7 @@
 {
   z-index: 9999;
   width: auto;
-  background: InfoBackground url( '#{$images-path}/loading/loading.gif' ) no-repeat 5px 9px;
+  background: InfoBackground url( '#{$commonjs-images-path}/loading/loading.gif' ) no-repeat 5px 9px;
   font-family: verdana,serif;
   font-size: 12px;
   font-weight: bold;

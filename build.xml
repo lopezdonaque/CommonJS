@@ -79,7 +79,7 @@
       <fileset dir="${basedir}" includes="examples/**" />
       <fileset dir="${basedir}" includes="locale/**" />
       <fileset dir="${basedir}" includes="examples/**" />
-      <fileset dir="${basedir}" includes="resources/**" excludes="**/sass*, **/*.scss" />
+      <fileset dir="${basedir}" includes="resources/**" />
     </copy>
 
 

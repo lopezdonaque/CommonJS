@@ -23,7 +23,8 @@ Ext.define( 'Common.api.Record',
   /**
    * Fields configuration
    *
-   * @var {Array}
+   * @property {Array}
+   * @private
    */
   _fields: [],
 
@@ -31,7 +32,7 @@ Ext.define( 'Common.api.Record',
   /**
    * Fields
    *
-   * @var {Ext.util.MixedCollection}
+   * @property {Ext.util.MixedCollection}
    */
   fields: new Ext.util.MixedCollection( false, function( field ){ return field.name; } ),
 

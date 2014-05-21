@@ -11,7 +11,7 @@ Ext.define( 'Common.ui.upload.GlobalProgressBar',
   /**
    * Uploader instance
    *
-   * @var {Common.upload.Uploader}
+   * @property {Common.upload.Uploader}
    */
   uploader: null,
 
@@ -19,7 +19,7 @@ Ext.define( 'Common.ui.upload.GlobalProgressBar',
   /**
    * Progress text
    *
-   * @var {String}
+   * @property {String}
    */
   progressText: '{2} of {1} uploaded ({5}/s)',
 

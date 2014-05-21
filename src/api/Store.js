@@ -122,7 +122,7 @@ Ext.define( 'Common.api.Store',
   /**
    * Group filters association
    *
-   * @var {Object}
+   * @property {Object}
    */
   group_filters_association: null,
 

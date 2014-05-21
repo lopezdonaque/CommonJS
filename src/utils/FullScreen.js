@@ -30,7 +30,7 @@ CommonExt.define( 'Common.utils.FullScreen',
    * Defines if fullscreen is supported or not
    *
    * @private
-   * @var {Boolean}
+   * @property {Boolean}
    */
   _isSupported: undefined,
 
@@ -39,7 +39,7 @@ CommonExt.define( 'Common.utils.FullScreen',
    * Browser prefix which is supported (webkit, moz, o, ms, khtml)
    *
    * @private
-   * @var {String}
+   * @property {String}
    */
   _browser_prefix: '',
 

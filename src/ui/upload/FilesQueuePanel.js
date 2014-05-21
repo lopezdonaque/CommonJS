@@ -17,7 +17,7 @@ Ext.define( 'Common.ui.upload.FilesQueuePanel',
   /**
    * Uploader instance
    *
-   * @var {Common.upload.Uploader}
+   * @property {Common.upload.Uploader}
    */
   uploader: null,
 
@@ -25,7 +25,7 @@ Ext.define( 'Common.ui.upload.FilesQueuePanel',
   /**
    * Empty text template
    *
-   * @var {String}
+   * @property {String}
    * @private
    */
   _emptyTextTpl: '<span class="common-upload-uploadpanel-emptytext">{0}</span>',
@@ -37,7 +37,7 @@ Ext.define( 'Common.ui.upload.FilesQueuePanel',
    * Used because we need to call "_update_store" slowly because it refreshes the ui and the row can not be selected or the remove button can not be clicked.
    * If the file rows are not selectable, you can use a lower value.
    *
-   * @var {Number}
+   * @property {Number}
    */
   refresh_speed: 500,
 

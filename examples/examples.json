@@ -12,7 +12,6 @@
       }
     ]
   },
-
   {
     "title": "UI Components",
     "items":
@@ -24,7 +23,13 @@
         "desc": "Notificator examples",
         "status": "updated"
       },
-
+      {
+        "text": "Notifier",
+        "url": "notifier/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "Notifier examples",
+        "status": ""
+      },
       {
         "text": "Timer",
         "url": "timer/index.html",
@@ -32,7 +37,6 @@
         "desc": "Timer examples",
         "status": ""
       },
-
       {
         "text": "Loading layer",
         "url": "loadinglayer/index.html",
@@ -40,7 +44,6 @@
         "desc": "Loading layer examples",
         "status": ""
       },
-
       {
         "text": "Tab Group",
         "url": "tabgroup/index.html",
@@ -48,18 +51,22 @@
         "desc": "Tab Group examples",
         "status": ""
       },
-
       {
         "text": "Grid",
         "url": "grid/index.html",
         "icon": "shared/screens/blank.gif",
         "desc": "Grid examples",
         "status": ""
+      },
+      {
+        "text": "Wizard",
+        "url": "wizard/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "Wizard examples",
+        "status": ""
       }
     ]
   },
-
-
   {
     "title": "UI Plugins",
     "items":

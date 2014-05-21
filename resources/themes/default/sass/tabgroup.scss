@@ -10,7 +10,7 @@
   margin-right: 8px;
   padding-right: 9px;
 
-  background-image: url( #{$images-path}/tabgroup/grid-blue-split.gif );
+  background-image: url( #{$commonjs-images-path}/tabgroup/grid-blue-split.gif );
   background-repeat: no-repeat;
   background-position: right;
 }
@@ -61,7 +61,7 @@
   margin-left: 3px;
   width: 7px;
   height: 7px;
-  background: url( #{$images-path}/tabgroup/close.png ) no-repeat;
+  background: url( #{$commonjs-images-path}/tabgroup/close.png ) no-repeat;
   background-size: 7px;
   cursor: pointer;
 }

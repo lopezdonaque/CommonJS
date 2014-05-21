@@ -63,7 +63,7 @@
   border: 1px solid #DDDDDD;
   cursor: pointer;
   white-space: nowrap;
-  background: url( '#{$images-path}/notificator/close.png' ) #222222 no-repeat 98% center;
+  background: url( '#{$commonjs-images-path}/notificator/close.png' ) #222222 no-repeat 98% center;
   text-align: center;
   width: 70px;
   color: #FFFFFF;
@@ -73,30 +73,30 @@
 /* Icons */
 .common-notificator_icon_success
 {
-  background-image: url( '#{$images-path}/notificator/success.png' );
+  background-image: url( '#{$commonjs-images-path}/notificator/success.png' );
 }
 
 .common-notificator_icon_error
 {
-  background-image: url( '#{$images-path}/notificator/error.png' );
+  background-image: url( '#{$commonjs-images-path}/notificator/error.png' );
 }
 
 .common-notificator_icon_warning
 {
-  background-image: url( '#{$images-path}/notificator/warning.png' );
+  background-image: url( '#{$commonjs-images-path}/notificator/warning.png' );
 }
 
 .common-notificator_icon_info
 {
-  background-image: url( '#{$images-path}/notificator/info.png' );
+  background-image: url( '#{$commonjs-images-path}/notificator/info.png' );
 }
 
 .common-notificator_icon_loading
 {
-  background-image: url( '#{$images-path}/notificator/loading.png' );
+  background-image: url( '#{$commonjs-images-path}/notificator/loading.png' );
 }
 
 .common-notificator_icon_appointment
 {
-  background-image: url( '#{$images-path}/notificator/appointment.png' );
+  background-image: url( '#{$commonjs-images-path}/notificator/appointment.png' );
 }

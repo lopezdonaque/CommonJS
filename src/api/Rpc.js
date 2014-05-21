@@ -160,7 +160,7 @@ CommonExt.define( 'Common.api.Rpc',
   /**
    * Attemps on error
    *
-   * @var {Number}
+   * @property {Number}
    * @private
    */
   _attemps_on_error: 0,

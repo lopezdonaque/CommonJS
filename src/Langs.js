@@ -46,10 +46,10 @@ CommonExt.define( 'Common.Langs',
     // If only has one argument, get the string from global
     if( arguments.length == 1 )
     {
-      return this._getGlobal( arguments[ 0 ] );
+      return this._getGlobal( arguments[0] );
     }
 
-    return this._get( arguments[ 0 ], arguments[ 1 ] );
+    return this._get( arguments[0], arguments[1] );
   },
 
 

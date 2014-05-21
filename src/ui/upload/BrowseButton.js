@@ -12,7 +12,7 @@ Ext.define( 'Common.ui.upload.BrowseButton',
   /**
    * Uploader instance
    *
-   * @var {Common.upload.Uploader}
+   * @property {Common.upload.Uploader}
    */
   uploader: null,
 

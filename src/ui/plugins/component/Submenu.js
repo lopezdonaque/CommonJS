@@ -11,7 +11,7 @@ CommonExt.define( 'Common.ui.plugins.component.Submenu',
   /**
    * Id to identify this plugin externally
    *
-   * @var {String}
+   * @property {String}
    */
   pluginId: 'submenu',
 

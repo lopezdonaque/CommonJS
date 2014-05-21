@@ -20,7 +20,7 @@ Ext.define( 'Common.ui.tabgroup.TabGroupPanel',
   /**
    * TabPanel container
    *
-   * @var {Ext.TabPanel}
+   * @property {Ext.TabPanel}
    * @private
    */
   _tabpanel: null,
@@ -29,7 +29,7 @@ Ext.define( 'Common.ui.tabgroup.TabGroupPanel',
   /**
    * Tab container
    *
-   * @var {Ext.Container}
+   * @property {Ext.Container}
    * @private
    */
   _tabcontainer: null,
@@ -38,7 +38,7 @@ Ext.define( 'Common.ui.tabgroup.TabGroupPanel',
   /**
    * Subtabs
    *
-   * @var {Array}
+   * @property {Array}
    * @private
    */
   _subtabs: null,
@@ -47,7 +47,7 @@ Ext.define( 'Common.ui.tabgroup.TabGroupPanel',
   /**
    * Active subtab
    *
-   * @var {Object}
+   * @property {Object}
    */
   activeSubtab: null,
 

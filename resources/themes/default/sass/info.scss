@@ -35,19 +35,19 @@
 
 
 /* INFO */
-.common-info_info { background: url( #{$images-path}/info/bg_info.png ) repeat-x top left; }
-.common-info_info .common-info_image { background: url( #{$images-path}/info/info.png ) no-repeat scroll center 10px; }
+.common-info_info { background: url( #{$commonjs-images-path}/info/bg_info.png ) repeat-x top left; }
+.common-info_info .common-info_image { background: url( #{$commonjs-images-path}/info/info.png ) no-repeat scroll center 10px; }
 .common-info_info .common-info_hr { border-top: 1px dashed #9BBC65; border-bottom: 0; }
 
 
 /* WARNING */
-.common-info_warning { background: url( #{$images-path}/info/bg_warning.png ) repeat-x top left; }
-.common-info_warning .common-info_image { background: url( #{$images-path}/info/warning.png ) no-repeat scroll center 10px; }
+.common-info_warning { background: url( #{$commonjs-images-path}/info/bg_warning.png ) repeat-x top left; }
+.common-info_warning .common-info_image { background: url( #{$commonjs-images-path}/info/warning.png ) no-repeat scroll center 10px; }
 .common-info_warning .common-info_hr { border-top: 1px dashed #FFAD44; border-bottom: 0; }
 
 
 /* ERROR */
-.common-info_error { background: url( #{$images-path}/info/bg_error.png ) repeat-x top left; }
-.common-info_error .common-info_image { background: url( #{$images-path}/info/error.png ) no-repeat scroll center 10px; }
+.common-info_error { background: url( #{$commonjs-images-path}/info/bg_error.png ) repeat-x top left; }
+.common-info_error .common-info_image { background: url( #{$commonjs-images-path}/info/error.png ) no-repeat scroll center 10px; }
 .common-info_error .common-info_hr { border-top: 1px dashed red; border-bottom: 0; }
 

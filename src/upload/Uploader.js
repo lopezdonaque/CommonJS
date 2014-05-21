@@ -15,7 +15,7 @@ CommonExt.define( 'Common.upload.Uploader',
     /**
      * Defines the upload starts automatically when a file is added
      *
-     * @var {Boolean}
+     * @property {Boolean}
      */
     auto_start_upload: false,
 
@@ -23,7 +23,7 @@ CommonExt.define( 'Common.upload.Uploader',
     /**
      * Max files allowed to be added
      *
-     * @var {Number}
+     * @property {Number}
      */
     max_files: null,
 
@@ -31,7 +31,7 @@ CommonExt.define( 'Common.upload.Uploader',
     /**
      * PlUpload settings
      *
-     * @var {Object}
+     * @property {Object}
      */
     plupload_settings: {}
   },
@@ -42,7 +42,7 @@ CommonExt.define( 'Common.upload.Uploader',
    *
    * Default settings to run component as expected. This settings should not be changed.
    *
-   * @var {Object}
+   * @property {Object}
    * @private
    */
   _plupload_default_settings:
@@ -79,7 +79,7 @@ CommonExt.define( 'Common.upload.Uploader',
   /**
    * PlUpload instance
    *
-   * @var {plupload.Uploader}
+   * @property {plupload.Uploader}
    */
   _uploader: null,
 

@@ -12,7 +12,7 @@ Ext.define( 'Common.ui.upload.DropZone',
   /**
    * Uploader instance
    *
-   * @var {Common.upload.Uploader}
+   * @property {Common.upload.Uploader}
    */
   uploader: null,
 
@@ -21,7 +21,7 @@ Ext.define( 'Common.ui.upload.DropZone',
    * Target where the dropzone will be displayed.
    * If null, target will be the body.
    *
-   * @var {Ext.Component}
+   * @property {Ext.Component}
    */
   target: null,
 

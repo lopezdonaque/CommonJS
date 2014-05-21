@@ -18,7 +18,7 @@ CommonExt.define( 'Common.ui.loading.LoadingLayer',
   /**
    * Loading layer instance
    *
-   * @var {Ext.Container}
+   * @property {Ext.Container}
    * @private
    */
   _loading_layer: null,
