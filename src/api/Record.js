@@ -34,7 +34,7 @@ Ext.define( 'Common.api.Record',
    *
    * @property {Ext.util.MixedCollection}
    */
-  fields: new Ext.util.MixedCollection( false, function( field ){ return field.name; } ),
+  fields: null,
 
 
 
@@ -72,9 +72,15 @@ Ext.define( 'Common.api.Record',
    */
   _build_fields: function()
   {
+    if( !this.fields )
+    {
+      this.fields = new Ext.util.MixedCollection( false, function( field ){ return field.name; } );
+    }
+
     for( var i = 0, len = this._fields.length; i < len; i++ )
     {
       this.fields.add( new Ext.data.Field( this._fields[i] ) );
     }
   }
+
 });

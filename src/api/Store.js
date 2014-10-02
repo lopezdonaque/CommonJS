@@ -158,7 +158,7 @@ Ext.define( 'Common.api.Store',
 
     this.list_options =
     {
-      page: 0,
+      page: 1,
       rows_per_page: null,
       sort_column: null,
       sort_type: null,

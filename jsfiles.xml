@@ -21,6 +21,7 @@
     utils/FullScreen.js
     utils/Page.js
     utils/Html.js
+    utils/Input.js
     utils/UserMediaChecker.js
     capabilities/Browser.js
     capabilities/BrowserPlugins.js
@@ -44,6 +45,7 @@
     notifier/Notifier.js
     notifier/Utils.js
     notifier/Gritter.js
+    form/ColorField.js
     ui/overrides/FormFieldRequired.js
     ui/overrides/FieldFocus.js
     ui/overrides/VTypes.js

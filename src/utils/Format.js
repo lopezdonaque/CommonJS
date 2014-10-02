@@ -41,7 +41,7 @@ CommonExt.define( 'Common.utils.Format',
       // The cmp is not part of the grid items, so we must to destroy it when the grid is destroyed
       that.on( 'beforedestroy', function(){ cmp.destroy(); } );
 
-      setTimeout( function(){ cmp.render( id ); }, 25 );
+      setTimeout( function(){ if( Ext.get( id ) ) cmp.render( id ); }, 25 );
 
       return '<div id="' + id + '"></div>';
     };

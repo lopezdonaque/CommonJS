@@ -64,6 +64,13 @@
         "icon": "shared/screens/blank.gif",
         "desc": "Wizard examples",
         "status": ""
+      },
+      {
+        "text": "Form controls",
+        "url": "form/index.html",
+        "icon": "shared/screens/blank.gif",
+        "desc": "Form controls examples",
+        "status": ""
       }
     ]
   },

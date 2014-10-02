@@ -147,8 +147,18 @@
   <!-- **************************************************** -->
   <target name="package" depends="build_project, jsdoc">
 
-    <!-- Deployment package -->
-    <zip destfile="${package.name}-${package.version}.zip" basedir="deployment" />
+    <!-- Zip package (Full) -->
+    <zip destfile="${package.name}-${package.version}.zip" basedir="deployment" includes="**/*" />
+
+    <!-- Zip package (Production) -->
+    <zip destfile="${package.name}-${package.version}-production.zip">
+      <fileset dir="deployment">
+        <include name="builds/**" />
+        <include name="locale/**" />
+        <include name="resources/**" />
+      </fileset>
+    </zip>
+
   </target>
 
 

@@ -409,6 +409,8 @@ CommonExt.define( 'Common.api.Rpc',
       response = { error: true };
     }
 
+    this.fireEvent( 'beforecomplete', response, this );
+
     if( response && response.error === true )
     {
       if( this.fireEvent( Common.api.RpcEvents.ERROR, response, this ) !== false )
@@ -424,6 +426,8 @@ CommonExt.define( 'Common.api.Rpc',
         Common.api.RpcEvents.fireEvent( Common.api.RpcEvents.SUCCESS, response, headers, this );
       }
     }
+
+    this.fireEvent( 'complete', response, this );
   },
 
 
@@ -457,10 +461,14 @@ CommonExt.define( 'Common.api.Rpc',
     this._destroy_trans();
     this.trans = false;
 
+    this.fireEvent( 'beforecomplete', null, this );
+
     if( this.fireEvent( Common.api.RpcEvents.ERROR, null, this ) !== false )
     {
       Common.api.RpcEvents.fireEvent( Common.api.RpcEvents.ERROR, null, this );
     }
+
+    this.fireEvent( 'complete', null, this );
   },
 
 
