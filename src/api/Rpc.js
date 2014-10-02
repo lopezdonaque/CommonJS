@@ -196,7 +196,7 @@ CommonExt.define( 'Common.api.Rpc',
       //throw '[Common.api.Rpc.constructor] User data or token should be defined';
     }
 
-    this.callParent( arguments );
+    this.callParent( [ options ] );
     return this;
   },
 
