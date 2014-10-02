@@ -15,7 +15,7 @@ CommonExt.define( 'Common.utils.Debug',
    */
   getDebugParams: function()
   {
-    if( !CommonExt.util.Cookies.get( 'start_debug_api' ) )
+    if( !CommonExt.util.Cookies.get( 'start_debug_forward' ) && !CommonExt.util.Cookies.get( 'start_debug_api' ) )
     {
       //return { start_debug: 0 }; // Forces to stop debug because ZendDebuggerCookie could be present on different domain and the bookmarklet can not remove it
       return {};
